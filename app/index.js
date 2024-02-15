@@ -16,6 +16,7 @@ module.exports = class Application {
     this.setupExpress();
     this.setupMongoConnections()
     this.setupConfig();
+    this.setupRouter()
   }
 
   setupExpress() {
@@ -33,7 +34,7 @@ module.exports = class Application {
   setupConfig() {
     app.use(express.static("public"));
     app.set("view engine", "ejs");
-    app.set("views", path.resolve("./resource/views"));
+    app.set("views", path.resolve("resource/views"));
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
@@ -52,8 +53,10 @@ module.exports = class Application {
     app.use(cookieParser("xxxxxxxxxxxxxx"));
     app.use(flash());
 
-    app.get("/", (req, res) => {
-      res.json("Hello express");
-    });
+  }
+
+  setupRouter(){
+    app.use(require('app/routes/web/index'))
+    app.use(require('app/routes/api/index'))
   }
 };
