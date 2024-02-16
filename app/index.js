@@ -32,6 +32,9 @@ module.exports = class Application {
   }
 
   setupConfig() {
+    // for find "local.***" in app
+    require('app/passport/passport-local')
+
     app.use(express.static("public"));
     app.set("view engine", "ejs");
     app.set("views", path.resolve("resource/views"));
@@ -52,6 +55,9 @@ module.exports = class Application {
 
     app.use(cookieParser("xxxxxxxxxxxxxx"));
     app.use(flash());
+
+    app.use(passport.initialize())
+    app.use(passport.session())
 
   }
 
