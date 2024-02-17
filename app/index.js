@@ -10,6 +10,8 @@ const MongoStore = require("connect-mongo")(session);
 const passport = require("passport");
 const flash = require("connect-flash");
 const mongoose = require("mongoose");
+const Helper = require('./helper')
+const rememberLogin = require('app/http/middlewares/rememberLogin')
 
 module.exports = class Application {
   constructor() {
@@ -59,6 +61,11 @@ module.exports = class Application {
 
     app.use(passport.initialize());
     app.use(passport.session());
+    app.use(rememberLogin.handler)
+    app.use((req, res, next) => {
+      app.locals = new Helper(req,res).getObject()
+      next()
+    });
   }
 
   setupRouter() {

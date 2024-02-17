@@ -37,8 +37,14 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a class="btn btn-success btn-sm ml-2" href="/login">ورود</a></li>
-          <li><a class="btn btn-primary btn-sm" href="/register">عضویت</a></li>
+          <% if(auth.check){ %>
+            <li><a class="btn btn-success btn-sm ml-2" href="/user-panel">پنل کاربری</a></li>
+            <li><a class="btn btn-danger btn-sm" href="/logout">خروج</a></li>
+            <% }else{ %>
+              <li><a class="btn btn-success btn-sm ml-2" href="/login">ورود</a></li>
+              <li><a class="btn btn-primary btn-sm" href="/register">عضویت</a></li>
+              <%}%>
+
         </ul>
       </div>
     </div>

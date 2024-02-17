@@ -38,10 +38,15 @@ class loginController extends controller {
   }
 
   login(req, res, next) {
-    passport.authenticate("local.login", {
-      successRedirect: "/",
-      failureRedirect: "/login",
-      failureFlash: true,
+    passport.authenticate("local.login",(error, user)=>{
+      if(!user) return res.redirect('/login')
+
+      req.login(user, error=>{
+        if(req.body.remember){
+          req.user.setRememberToken(res)
+        }
+        res.redirect('/')
+      })
     })(req, res, next);
   }
 }
