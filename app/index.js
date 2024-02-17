@@ -14,9 +14,9 @@ const mongoose = require("mongoose");
 module.exports = class Application {
   constructor() {
     this.setupExpress();
-    this.setupMongoConnections()
+    this.setupMongoConnections();
     this.setupConfig();
-    this.setupRouter()
+    this.setupRouter();
   }
 
   setupExpress() {
@@ -33,7 +33,7 @@ module.exports = class Application {
 
   setupConfig() {
     // for find "local.***" in app
-    require('app/passport/passport-local')
+    require("app/passport/passport-local");
 
     app.use(express.static("public"));
     app.set("view engine", "ejs");
@@ -49,6 +49,7 @@ module.exports = class Application {
         secret: "xxxxxxxxxxxxxxx",
         resave: true,
         saveUninitialized: true,
+        cookie: { expires: new Date(Date.now() + 1000 * 60 * 60 * 6) },
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
       })
     );
@@ -56,13 +57,12 @@ module.exports = class Application {
     app.use(cookieParser("xxxxxxxxxxxxxx"));
     app.use(flash());
 
-    app.use(passport.initialize())
-    app.use(passport.session())
-
+    app.use(passport.initialize());
+    app.use(passport.session());
   }
 
-  setupRouter(){
-    app.use(require('app/routes/web/index'))
-    app.use(require('app/routes/api/index'))
+  setupRouter() {
+    app.use(require("app/routes/web/index"));
+    app.use(require("app/routes/api/index"));
   }
 };

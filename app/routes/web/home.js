@@ -10,6 +10,7 @@ const registerController = require('app/http/controllers/auth/registerController
 //Home Router
 router.get("/", homeController.index);
 router.get('/login' , loginController.showLoginForm);
+router.post('/login' , loginController.loginProcess);
 router.get('/register' , registerController.showRegsitrationForm);
 router.post('/register' , registerController.registerProcess);
 

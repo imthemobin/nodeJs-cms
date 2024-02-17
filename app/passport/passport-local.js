@@ -25,8 +25,6 @@ passport.use(
       passReqToCallback: true,
     },
     async (req, email, password, done) => {
-      console.log(email, password);
-
       try {
         const existingUser = await User.findOne({ email });
 
@@ -54,6 +52,43 @@ passport.use(
           req.flash(
             "errors",
             "ثبت نام با موفقیت انجام نشد لطفا دوباره سعی کنید"
+          )
+        );
+      }
+    }
+  )
+);
+
+passport.use(
+  "local.login",
+  new localStrategy(
+    {
+      usernameField: "email",
+      passwordField: "password",
+      passReqToCallback: true,
+    },
+    async (req, email, password, done) => {
+      try {
+        const existingUser = await User.findOne({ email });
+        const truePass = bcrypt.compareSync(password, existingUser.password);
+
+        if (!existingUser || !truePass) {
+          return done(
+            null,
+            false,
+            req.flash("errors", "اطلاعات کاربر مطابقت ندارد")
+          );
+        }
+
+        return done(null, existingUser);
+
+      } catch (err) {
+        return done(
+          err,
+          false,
+          req.flash(
+            "errors",
+            "هنگام ورود مشکلی در دیتابیس پیش آمده مجددا تلاش کنید"
           )
         );
       }
