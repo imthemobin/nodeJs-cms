@@ -1,5 +1,6 @@
 const autoBind = require("auto-bind");
 const Recaptcha = require("express-recaptcha").RecaptchaV2;
+const { validationResult } = require("express-validator/check");
 
 module.exports = class controller {
   constructor() {
@@ -31,5 +32,19 @@ module.exports = class controller {
         }
       });
     });
+  }
+
+  async validationData(req) {
+    const result = validationResult(req);
+
+    if (!result.isEmpty()) {
+      const errors = result.array();
+      const message = [];
+      errors.forEach((error) => message.push(error.msg));
+
+      req.flash("errors", message);
+      return false;
+    }
+    return true;
   }
 };

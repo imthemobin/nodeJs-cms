@@ -10,29 +10,11 @@ class loginController extends controller {
   }
 
   loginProcess(req, res, next) {
-    this.validationData(req).then((result) => {
-      if (result) this.login(req, res, next);
-      else res.redirect("/login");
-    });
-  }
-
-  validationData(req) {
-    req.checkBody("email", "فیلد ایمیل معتبر نیست").isEmail();
-    req
-      .checkBody("password", "فیلد پسورد نمی تواند کمتر از ۸ کاراکتر باشد")
-      .isLength({ min: 8 });
-
-    return req
-      .getValidationResult()
+    this.recapchaValidation(req, res)
+      .then((result) => this.validationData(req))
       .then((result) => {
-        const errors = result.array();
-        const message = [];
-        errors.forEach((error) => message.push(error.msg));
-
-        if (message.length == 0) return true;
-
-        req.flash("errors", message);
-        return false;
+        if (result) this.login(req, res, next);
+        else res.redirect("/login");
       })
       .catch((error) => console.log(error));
   }
