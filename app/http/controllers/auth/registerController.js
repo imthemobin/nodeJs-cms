@@ -1,12 +1,13 @@
 const controller = require("app/http/controllers/controller");
 const passport = require("passport");
 
-
 class registerController extends controller {
   showRegsitrationForm(req, res) {
-    res.render("auth/register", {
+    const title = "صفحه عضویت";
+    res.render("home/auth/register", {
       errors: req.flash("errors"),
       recaptcha: this.recaptcha.render(),
+      title: title,
     });
   }
 
@@ -19,8 +20,6 @@ class registerController extends controller {
       })
       .catch((error) => console.log(error));
   }
-
-
 
   register(req, res, next) {
     passport.authenticate("local.register", {
