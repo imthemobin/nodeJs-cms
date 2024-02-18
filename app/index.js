@@ -34,8 +34,9 @@ module.exports = class Application {
   }
 
   setupConfig() {
-    // for find "local.***" in app
+    
     require("app/passport/passport-local");
+    require("app/passport/passport-google")
 
     app.use(express.static(config.layouts.public_dir));
     app.set("view engine", config.layouts.view_engine);
