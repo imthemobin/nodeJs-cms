@@ -1,12 +1,10 @@
 const express = require("express");
 const app = express();
 const http = require("http");
-const path = require("path");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const validator = require("express-validator");
 const session = require("express-session");
-const MongoStore = require("connect-mongo")(session);
 const passport = require("passport");
 const flash = require("connect-flash");
 const mongoose = require("mongoose");
@@ -23,12 +21,12 @@ module.exports = class Application {
 
   setupExpress() {
     const server = http.createServer(app);
-    server.listen(3000, () => console.log("you are listening to port: 3000"));
+    server.listen(config.port, () => console.log(`you are listening to port: ${config.port} `));
   }
 
   setupMongoConnections() {
     mongoose
-      .connect("mongodb://localhost:27017/nodejs")
+      .connect(config.database.url)
       .then(() => console.log("connect successfully to mongo"))
       .catch(() => console.log("fail to connect mongo"));
   }
@@ -37,9 +35,9 @@ module.exports = class Application {
     // for find "local.***" in app
     require("app/passport/passport-local");
 
-    app.use(express.static("public"));
-    app.set("view engine", "ejs");
-    app.set("views", path.resolve("resource/views"));
+    app.use(express.static(config.layouts.public_dir));
+    app.set("view engine", config.layouts.view_engine);
+    app.set("views", config.layouts.view_dir);
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
@@ -48,15 +46,11 @@ module.exports = class Application {
 
     app.use(
       session({
-        secret: "xxxxxxxxxxxxxxx",
-        resave: true,
-        saveUninitialized: true,
-        cookie: { expires: new Date(Date.now() + 1000 * 60 * 60 * 6) },
-        store: new MongoStore({ mongooseConnection: mongoose.connection }),
+       ...config.session
       })
     );
 
-    app.use(cookieParser("xxxxxxxxxxxxxx"));
+    app.use(cookieParser(config.cookie_secretkey));
     app.use(flash());
 
     app.use(passport.initialize());
