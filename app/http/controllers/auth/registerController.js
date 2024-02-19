@@ -11,14 +11,14 @@ class registerController extends controller {
     });
   }
 
-  registerProcess(req, res, next) {
-    this.recapchaValidation(req, res)
-      .then((result) => this.validationData(req))
-      .then((result) => {
-        if (result) this.register(req, res, next);
-        else res.redirect("/register");
-      })
-      .catch((error) => console.log(error));
+  async registerProcess(req, res, next) {
+    await this.recapchaValidation(req, res);
+
+    let result = await this.validationData(req);
+
+    if (result) return this.register(req, res, next);
+
+    return res.redirect("/register");
   }
 
   register(req, res, next) {

@@ -3,34 +3,34 @@ const passport = require("passport");
 
 class loginController extends controller {
   showLoginForm(req, res) {
-    const title = 'صفحه ورود'
+    const title = "صفحه ورود";
     res.render("home/auth/login", {
       errors: req.flash("errors"),
       recaptcha: this.recaptcha.render(),
-      title: title
+      title: title,
     });
   }
 
-  loginProcess(req, res, next) {
-    this.recapchaValidation(req, res)
-      .then((result) => this.validationData(req))
-      .then((result) => {
-        if (result) this.login(req, res, next);
-        else res.redirect("/login");
-      })
-      .catch((error) => console.log(error));
+  async loginProcess(req, res, next) {
+    await this.recapchaValidation(req, res);
+
+    let result = await this.validationData(req);
+
+    if (result) return this.login(req, res, next);
+
+    return res.redirect("/login");
   }
 
   login(req, res, next) {
-    passport.authenticate("local.login",(error, user)=>{
-      if(!user) return res.redirect('/login')
+    passport.authenticate("local.login", (error, user) => {
+      if (!user) return res.redirect("/login");
 
-      req.login(user, error=>{
-        if(req.body.remember){
-          req.user.setRememberToken(res)
+      req.login(user, (error) => {
+        if (req.body.remember) {
+          req.user.setRememberToken(res);
         }
-        res.redirect('/')
-      })
+        res.redirect("/");
+      });
     })(req, res, next);
   }
 }

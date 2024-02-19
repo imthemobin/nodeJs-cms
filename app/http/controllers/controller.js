@@ -28,7 +28,8 @@ module.exports = class controller {
             "errors",
             "گزینه امنیتی مربوط به این که من ربات نیستم را چک کنید و مجدد تلاش فرماید"
           );
-          res.redirect(req.url);
+          this.back(req,res);
+          // res.redirect(req.url);
         }
       });
     });
@@ -46,5 +47,9 @@ module.exports = class controller {
       return false;
     }
     return true;
+  }
+
+  back(req, res) {
+    return res.redirect(req.header("Referer") || "/");
   }
 };
