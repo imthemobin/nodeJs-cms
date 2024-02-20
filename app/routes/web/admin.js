@@ -8,6 +8,12 @@ const courseController = require("app/http/controllers/admin/courseController");
 //validaton
 const courseValidation = require("app/http/validator/courseValidator");
 
+// Helper
+const upload = require('app/helper/uploadImage')
+
+// Middlewares
+const convertFileToField = require('app/http/middlewares/converFileToField')
+
 router.use((req, res, next) => {
   res.locals.layout = "admin/master";
   next();
@@ -19,6 +25,8 @@ router.get("/courses", courseController.index);
 router.get("/courses/create", courseController.create);
 router.post(
   "/courses/create",
+  upload.single('images'),
+  convertFileToField.handler,
   courseValidation.handler(),
   courseController.store
 );

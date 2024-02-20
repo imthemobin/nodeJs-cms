@@ -1,5 +1,6 @@
 const controller = require("app/http/controllers/controller");
 const Course = require("app/models/course");
+const fs = require('fs')
 
 class courseController extends controller {
   index(req, res) {
@@ -14,6 +15,10 @@ class courseController extends controller {
     let result = await this.validationData(req);
 
     if (!result) {
+        //if error exist in form image dont created
+        if(req.file){
+            fs.unlink(req.file.path,(error)=>{})
+        }
       return this.back(req, res);
     }
 
