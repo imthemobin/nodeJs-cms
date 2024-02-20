@@ -18,6 +18,7 @@ class loginController extends controller {
 
     if (result) return this.login(req, res, next);
 
+    req.flash('formData', req.body)
     return res.redirect("/login");
   }
 

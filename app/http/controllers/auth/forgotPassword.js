@@ -43,6 +43,7 @@ class forgotPasswordController extends controller {
     //send mail
 
     // req.flash('success', 'رمز عبور شما با موفقیت تغیر کرد')
+    req.flash('formData', req.body)
     res.redirect("/");
   }
 }
