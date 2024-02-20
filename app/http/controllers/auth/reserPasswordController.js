@@ -10,7 +10,6 @@ class resetPasswordController extends controller {
     const title = "تغیر رمز عبور";
     console.log(req.flash('email'))
     res.render("home/auth/forgot_password/reset", {
-      errors: req.flash("errors"),
       recaptcha: this.recaptcha.render(),
       title: title,
       token: req.params.token,
@@ -27,6 +26,8 @@ class resetPasswordController extends controller {
     
     req.flash('formData', req.body)
     return res.redirect("/password/reset/" + req.body.token);
+
+    // return this.back(req,res)
   }
 
   async resetPassword(req, res, next) {

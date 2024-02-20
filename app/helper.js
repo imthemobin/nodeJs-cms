@@ -13,7 +13,7 @@ module.exports = class helper {
     return {
       auth: this.auth(),
       viewPath: this.viewPath,
-      ...this.globalVaribales,
+      ...this.globalVaribales(),
       old: this.old,
     };
   }
@@ -31,12 +31,11 @@ module.exports = class helper {
 
   globalVaribales() {
     return {
-      errors: this.req.flash("errors "),
-    };
+      errors : this.req.flash('errors')
+  }
   }
 
   old(field, defaultValue = "") {
-    let formData = this.req.flash("formData")[0];
     return this.formData && this.formData.hasOwnProperty(field)
       ? this.formData[field]
       : defaultValue;

@@ -3,10 +3,10 @@ const uniqueString = require("unique-string");
 
 const userSchema = mongoose.Schema(
   {
-    name: { type: String, require: true },
-    email: { type: String, require: true, unique: true },
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     isAdmin: { type: Boolean, default: 0 },
-    password: { type: String, require: true },
+    password: { type: String, required: true },
     rememberToken: { type: String, default: null },
   },
   { timestamps: true }

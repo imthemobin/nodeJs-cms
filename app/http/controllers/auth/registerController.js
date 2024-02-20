@@ -5,7 +5,6 @@ class registerController extends controller {
   showRegsitrationForm(req, res) {
     const title = "صفحه عضویت";
     res.render("home/auth/register", {
-      errors: req.flash("errors"),
       recaptcha: this.recaptcha.render(),
       title: title,
     });
@@ -18,8 +17,7 @@ class registerController extends controller {
 
     if (result) return this.register(req, res, next);
 
-    req.flash('formData', req.body)
-    return res.redirect("/register");
+    return this.back(req, res);
   }
 
   register(req, res, next) {

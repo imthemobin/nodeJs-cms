@@ -9,7 +9,6 @@ class forgotPasswordController extends controller {
   showForgotPasswordForm(req, res) {
     const title = "فراموشی رمز عبور";
     res.render("home/auth/forgot_password/email", {
-      errors: req.flash("errors"),
       recaptcha: this.recaptcha.render(),
       title: title,
     });
@@ -22,7 +21,7 @@ class forgotPasswordController extends controller {
 
     if (result) return this.sendResetLink(req, res, next);
 
-    return res.redirect("/password/reset");
+    return this.back(req,res)
   }
 
   async sendResetLink(req, res, next) {
@@ -43,7 +42,6 @@ class forgotPasswordController extends controller {
     //send mail
 
     // req.flash('success', 'رمز عبور شما با موفقیت تغیر کرد')
-    req.flash('formData', req.body)
     res.redirect("/");
   }
 }
