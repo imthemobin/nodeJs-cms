@@ -1,7 +1,7 @@
 const validator = require("./validator");
 const { check } = require("express-validator/check");
 const Course = require("app/models/course");
-const path = require('path')
+const path = require("path");
 
 class courseValidator extends validator {
   handler() {
@@ -9,7 +9,11 @@ class courseValidator extends validator {
       check("title")
         .isLength({ min: 5 })
         .withMessage("عنوان نمیتواند کمتر از 5 کاراکتر باشد")
-        .custom(async (value) => {
+        .custom(async (value, { req }) => {
+          if (req.query._method === "put") {
+            let course = await Course.findById(req.params.id);
+            if (course.title === value) return;
+          }
           let course = await Course.findOne({ slug: this.slug(value) });
           if (course) {
             throw new Error(
@@ -18,11 +22,13 @@ class courseValidator extends validator {
           }
         }),
 
-      check("images").custom(async (value) => {
+      check("images").custom(async (value, { req }) => {
+        if (req.query._method === "put" && value === undefined) return;
+
         if (!value) throw new Error("وارد کردن تصویر الزامی است");
-        let fileExt = ['.jpg','.png','.jpeg','.svg']
-        if(! fileExt.includes(path.extname(value))){
-            throw new Error('پسوند فایل وارد شده از نوع تصویر نیست')
+        let fileExt = [".jpg", ".png", ".jpeg", ".svg"];
+        if (!fileExt.includes(path.extname(value))) {
+          throw new Error("پسوند فایل وارد شده از نوع تصویر نیست");
         }
       }),
 

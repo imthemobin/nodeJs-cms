@@ -9,10 +9,10 @@ const courseController = require("app/http/controllers/admin/courseController");
 const courseValidation = require("app/http/validator/courseValidator");
 
 // Helper
-const upload = require('app/helper/uploadImage')
+const upload = require("app/helper/uploadImage");
 
 // Middlewares
-const convertFileToField = require('app/http/middlewares/converFileToField')
+const convertFileToField = require("app/http/middlewares/converFileToField");
 
 router.use((req, res, next) => {
   res.locals.layout = "admin/master";
@@ -25,10 +25,18 @@ router.get("/courses", courseController.index);
 router.get("/courses/create", courseController.create);
 router.post(
   "/courses/create",
-  upload.single('images'),
+  upload.single("images"),
   convertFileToField.handler,
   courseValidation.handler(),
   courseController.store
 );
 router.delete("/courses/:id", courseController.destroy);
+router.get("/courses/:id/edit", courseController.edit);
+router.put(
+  "/courses/:id",
+  upload.single("images"),
+  convertFileToField.handler,
+  courseValidation.handler(),
+  courseController.update
+);
 module.exports = router;

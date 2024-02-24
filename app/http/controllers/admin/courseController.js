@@ -66,9 +66,59 @@ class courseController extends controller {
     );
 
     //delete course
-    await course.deleteOne({})
+    await course.deleteOne({});
 
-    res.redirect("/admin/courses")
+    res.redirect("/admin/courses");
+  }
+
+  async edit(req, res, next) {
+    let course = await Course.findById(req.params.id);
+
+    if (!course) {
+      return res.json("چنین دوره ای وجود ندارد");
+    }
+
+    res.render("admin/courses/edit", { course });
+  }
+
+  async update(req, res, next) {
+    let result = await this.validationData(req);
+
+    if (!result) {
+      //if error exist in form image dont created
+      if (req.file) {
+        fs.unlinkSync(req.file.path);
+      }
+      return this.back(req, res);
+    }
+
+    let objectForUpdate = {};
+
+    //set thumbnail
+
+    objectForUpdate.thumb = req.body.imagesThumb;
+
+    //check image
+    if (req.file) {
+      objectForUpdate.images = this.imageResize(req.file);
+      objectForUpdate.thumb = objectForUpdate.images[480];
+    }
+
+    
+
+    delete req.body.images;
+
+    //change slug
+    objectForUpdate.slug = this.slug(req.body.title);
+
+    //update course
+    await Course.findByIdAndUpdate(req.params.id, {
+      $set: { ...req.body, ...objectForUpdate },
+    });
+
+    //redirect back
+
+    return res.redirect("/admin/courses");
   }
 
   slug(title) {
