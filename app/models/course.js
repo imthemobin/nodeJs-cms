@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 const Schema = mongoose.Schema;
 
 const CourseSchema = Schema(
@@ -15,7 +16,20 @@ const CourseSchema = Schema(
     viewCount: { type: Number, default: 0 },
     commentCount: { type: Number, default: 0 },
   },
-  { timestamps: true  }
+  { timestamps: true }
 );
+
+CourseSchema.plugin(mongoosePaginate)
+
+CourseSchema.methods.typeToPersion = function () {
+  switch (this.type) {
+    case "cash":
+      return "نقدی";
+    case "vip":
+      return "اعضای ویژه";
+    default:
+      return "رایگان";
+  }
+};
 
 module.exports = mongoose.model("Course", CourseSchema);
