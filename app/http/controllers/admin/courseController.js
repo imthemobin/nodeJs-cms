@@ -8,7 +8,10 @@ class courseController extends controller {
   async index(req, res) {
     let page = req.query.page || 1;
 
-    let courses = await Course.paginate({}, { page: page,sort: {createdAt : 1}, limit: 1 });
+    let courses = await Course.paginate(
+      {},
+      { page: page, sort: { createdAt: 1 }, limit: 1 }
+    );
 
     res.render("admin/courses/index", { title: "دوره ها", courses: courses });
   }
@@ -23,7 +26,7 @@ class courseController extends controller {
     if (!result) {
       //if error exist in form image dont created
       if (req.file) {
-        fs.unlink(req.file.path, (error) => {});
+        fs.unlinkSync(req.file.path);
       }
       return this.back(req, res);
     }
@@ -37,13 +40,35 @@ class courseController extends controller {
       body: req.body.body,
       type: req.body.type,
       price: req.body.price,
-      images: JSON.stringify(this.imageResize(req.file)),
+      images: this.imageResize(req.file),
+      tumb: this.imageResize(req.file)[480],
       tags: req.body.tags,
     });
 
     await newCourse.save();
 
     return res.redirect("/admin/courses");
+  }
+
+  async destroy(req, res) {
+    let course = await Course.findById(req.params.id);
+
+    if (!course) {
+      return res.json("چنین دوره ای وحود ندارد");
+    }
+
+    // delete episode
+
+    // delete images
+
+    Object.values(course.images).forEach((image) =>
+      fs.unlinkSync(`./public${image}`)
+    );
+
+    //delete course
+    await course.deleteOne({})
+
+    res.redirect("/admin/courses")
   }
 
   slug(title) {

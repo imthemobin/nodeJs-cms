@@ -30,4 +30,5 @@ router.post(
   courseValidation.handler(),
   courseController.store
 );
+router.delete("/courses/:id", courseController.destroy);
 module.exports = router;

@@ -10,6 +10,7 @@ const flash = require("connect-flash");
 const mongoose = require("mongoose");
 const Helper = require("./helper");
 const rememberLogin = require("app/http/middlewares/rememberLogin");
+const methodOverride = require('method-override')
 
 module.exports = class Application {
   constructor() {
@@ -41,6 +42,9 @@ module.exports = class Application {
     app.use(express.static(config.layouts.public_dir));
     app.set("view engine", config.layouts.view_engine);
     app.set("views", config.layouts.view_dir);
+
+    //to find delete and other methods 
+    app.use(methodOverride('_method'))
 
     // config for express ejs layouts
     app.use(config.layouts.ejs.expressLayouts);
