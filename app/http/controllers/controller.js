@@ -1,6 +1,7 @@
 const autoBind = require("auto-bind");
 const Recaptcha = require("express-recaptcha").RecaptchaV2;
 const { validationResult } = require("express-validator/check");
+const isMongoId = require("validator/lib/isMongoId")
 
 module.exports = class controller {
   constructor() {
@@ -28,7 +29,7 @@ module.exports = class controller {
             "errors",
             "گزینه امنیتی مربوط به این که من ربات نیستم را چک کنید و مجدد تلاش فرماید"
           );
-          this.back(req,res);
+          this.back(req, res);
           // res.redirect(req.url);
         }
       });
@@ -50,7 +51,19 @@ module.exports = class controller {
   }
 
   back(req, res) {
-    req.flash('formData',req.body)
+    req.flash("formData", req.body);
     return res.redirect(req.header("Referer") || "/");
+  }
+
+  isMongoId(params) {
+    if(! isMongoId(params)){
+      this.error("آیدی وارد شده صحیح نیست",404)
+    }
+  }
+
+  error(message , status=500){
+    let error = new Error(message)
+    error.status = status;
+    throw error;
   }
 };

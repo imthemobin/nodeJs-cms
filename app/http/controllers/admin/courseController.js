@@ -16,7 +16,6 @@ class courseController extends controller {
 
       res.render("admin/courses/index", { title: "دوره ها", courses: courses });
     } catch (error) {
-      res.statusCode = 500;
       next(error);
     }
   }
@@ -55,7 +54,6 @@ class courseController extends controller {
 
       return res.redirect("/admin/courses");
     } catch (error) {
-      res.statusCode = 500;
       next(error);
     }
   }
@@ -81,22 +79,22 @@ class courseController extends controller {
 
       res.redirect("/admin/courses");
     } catch (error) {
-      res.statusCode = 500;
       next(error);
     }
   }
 
   async edit(req, res, next) {
     try {
+      this.isMongoId(req.params.id);
       let course = await Course.findById(req.params.id);
 
       if (!course) {
-        return res.json("چنین دوره ای وجود ندارد");
+        this.error("چنین دوره ای وجود ندارد",404)
       }
 
       res.render("admin/courses/edit", { course });
     } catch (error) {
-      res.statusCode = 500;
+      
       next(error);
     }
   }
@@ -139,7 +137,6 @@ class courseController extends controller {
 
       return res.redirect("/admin/courses");
     } catch (error) {
-      res.statusCode = 500;
       next(error);
     }
   }

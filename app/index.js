@@ -78,6 +78,5 @@ module.exports = class Application {
   setupRouter() {
     app.use(require("app/routes/web/index"));
     app.use(require("app/routes/api/index"));
-    app.use(require("app/routes/errorHandler"));
   }
 };
