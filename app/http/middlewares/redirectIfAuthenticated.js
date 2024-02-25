@@ -1,6 +1,6 @@
 const middleware = require("./middlewares");
 
-class rememberLogin extends middleware {
+class redirectIfAuthenticated extends middleware {
   handler(req, res, next) {
     if (req.isAuthenticated()) 
         res.redirect("/");
@@ -9,4 +9,4 @@ class rememberLogin extends middleware {
   }
 }
 
-module.exports = new rememberLogin();
+module.exports = new redirectIfAuthenticated();

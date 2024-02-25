@@ -1,6 +1,6 @@
 const middleware = require("./middlewares");
 
-class redirectIfAdmin extends middleware {
+class redirectIfNotAdmin extends middleware {
   handler(req, res, next) {
     if (req.isAuthenticated() && req.user.isAdmin) return next();
 
@@ -8,4 +8,4 @@ class redirectIfAdmin extends middleware {
   }
 }
 
-module.exports = new redirectIfAdmin();
+module.exports = new redirectIfNotAdmin();
