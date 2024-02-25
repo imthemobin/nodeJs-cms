@@ -19,8 +19,8 @@ const authRouter = require("app/routes/web/auth");
 router.use("/", redirectIfAuthenticated.handler, authRouter);
 
 
+// handle error
 router.all("*", errorHandler.error404);
-  
 router.use(errorHandler.handler);
 
 module.exports = router;
