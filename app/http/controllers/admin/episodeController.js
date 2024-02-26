@@ -26,7 +26,7 @@ class episodeController extends controller {
 
   async create(req, res) {
     let courses = await Course.find();
-    res.render("admin/episodes/create",{courses: courses});
+    res.render("admin/episodes/create", { courses: courses });
   }
 
   async store(req, res, next) {
@@ -44,6 +44,7 @@ class episodeController extends controller {
       await newEpisode.save();
 
       // update time course
+      this.updateCourseTime(req.body.course);
 
       return res.redirect("/admin/episodes");
     } catch (error) {
@@ -56,11 +57,16 @@ class episodeController extends controller {
       let episode = await Episode.findById(req.params.id);
 
       if (!episode) {
-        this.error('چنین ویدیو ای وجود ندارد' , 404);
+        this.error("چنین ویدیو ای وجود ندارد", 404);
       }
+
+      let courseId = episode.course;
 
       //delete episode
       await episode.deleteOne({});
+
+      // update time course
+      this.updateCourseTime(courseId);
 
       res.redirect("/admin/episodes");
     } catch (error) {
@@ -71,13 +77,14 @@ class episodeController extends controller {
   async edit(req, res, next) {
     try {
       this.isMongoId(req.params.id);
-      let course = await Course.findById(req.params.id);
+      let episode = await Episode.findById(req.params.id);
+      let courses = await Course.find();
 
-      if (!course) {
-        this.error("چنین دوره ای وجود ندارد", 404);
+      if (!episode) {
+        this.error("چنین ویدوی ای وجود ندارد", 404);
       }
 
-      res.render("admin/courses/edit", { course });
+      res.render("admin/episodes/edit", { episode: episode, courses: courses });
     } catch (error) {
       next(error);
     }
@@ -88,45 +95,36 @@ class episodeController extends controller {
       let result = await this.validationData(req);
 
       if (!result) {
-        //if error exist in form image dont created
-        if (req.file) {
-          fs.unlinkSync(req.file.path);
-        }
         return this.back(req, res);
       }
 
-      let objectForUpdate = {};
-
-      //set thumbnail
-
-      objectForUpdate.thumb = req.body.imagesThumb;
-
-      //check image
-      if (req.file) {
-        objectForUpdate.images = this.imageResize(req.file);
-        objectForUpdate.thumb = objectForUpdate.images[480];
-      }
-
-      delete req.body.images;
-
-      //change slug
-      objectForUpdate.slug = this.slug(req.body.title);
-
-      //update course
-      await Course.findByIdAndUpdate(req.params.id, {
-        $set: { ...req.body, ...objectForUpdate },
+      //update episode
+      let episode = await Episode.findByIdAndUpdate(req.params.id, {
+        $set: { ...req.body },
       });
 
-      //redirect back
+      // update time course
 
-      return res.redirect("/admin/courses");
+      // prev course time update
+      this.updateCourseTime(episode.course);
+      // now course time update
+      this.updateCourseTime(req.body.course);
+
+      //redirect back
+      return res.redirect("/admin/episodes");
     } catch (error) {
       next(error);
     }
   }
 
-  slug(title) {
-    return title.replace(/([^۰-۹آ-یa-z0-9]|-)+/g, "-");
+  async updateCourseTime(coursId) {
+    let course = await Course.findById(coursId);
+    let episodes = await Episode.find({ course: coursId });
+
+    course.time = this.getTime(episodes);
+
+    await course.save();
+    return episodes;
   }
 }
 

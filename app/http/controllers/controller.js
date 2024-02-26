@@ -1,7 +1,8 @@
 const autoBind = require("auto-bind");
 const Recaptcha = require("express-recaptcha").RecaptchaV2;
 const { validationResult } = require("express-validator/check");
-const isMongoId = require("validator/lib/isMongoId")
+const isMongoId = require("validator/lib/isMongoId");
+const sprintf = require("sprintf-js").sprintf;
 
 module.exports = class controller {
   constructor() {
@@ -56,14 +57,37 @@ module.exports = class controller {
   }
 
   isMongoId(params) {
-    if(! isMongoId(params)){
-      this.error("آیدی وارد شده صحیح نیست",404)
+    if (!isMongoId(params)) {
+      this.error("آیدی وارد شده صحیح نیست", 404);
     }
   }
 
-  error(message , status=500){
-    let error = new Error(message)
+  error(message, status = 500) {
+    let error = new Error(message);
     error.status = status;
     throw error;
+  }
+
+  getTime(episodes) {
+    let second = 0;
+
+    episodes.forEach((episode) => {
+      let time = episode.time.split(":");
+
+      if (time.length === 2) {
+        second += parseInt(time[0] * 60);
+        second += parseInt(time[1]);
+      } else if (time.length === 3) {
+        second += parseInt(time[0] * 3600);
+        second += parseInt(time[1] * 60);
+        second += parseInt(time[2]);
+      }
+    });
+
+    let hours = Math.floor(second / 3600);
+    let minutes = Math.floor((second % 3600) / 60);
+    let seconds = second % 60;
+
+    return sprintf("%02d:%02d:%02d", hours, minutes, seconds);
   }
 };
