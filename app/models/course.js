@@ -17,7 +17,7 @@ const CourseSchema = Schema(
     viewCount: { type: Number, default: 0 },
     commentCount: { type: Number, default: 0 },
   },
-  { timestamps: true }
+  { timestamps: true , toJSON : {virtuals : true} }
 );
 
 CourseSchema.plugin(mongoosePaginate)
@@ -32,6 +32,10 @@ CourseSchema.methods.typeToPersion = function () {
       return "رایگان";
   }
 };
+
+CourseSchema.methods.path = function(){
+  return `/courses/${this.slug}`
+}
 
 CourseSchema.virtual('episodes',{
   ref:'Episode',
