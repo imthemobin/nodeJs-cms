@@ -1,8 +1,14 @@
 const controller = require("app/http/controllers/controller");
+const User = require("app/models/user");
+const Course = require("app/models/course");
 
 class homeController extends controller {
-  index(req, res) {
-    res.render('home/index')
+  async index(req, res) {
+
+    // ******test virtual*******
+    // let user = await User.findById("65d1105dbf3d7dda728eb9a4").populate("courses").exec();
+    // return res.json(user);
+    res.render("home/index");
   }
 }
 

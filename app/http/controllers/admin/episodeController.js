@@ -118,13 +118,10 @@ class episodeController extends controller {
   }
 
   async updateCourseTime(coursId) {
-    let course = await Course.findById(coursId);
-    let episodes = await Episode.find({ course: coursId });
-
-    course.time = this.getTime(episodes);
+    let course = await Course.findById(coursId).populate("episodes").exec();
+    course.time = this.getTime(course.episodes);
 
     await course.save();
-    return episodes;
   }
 }
 

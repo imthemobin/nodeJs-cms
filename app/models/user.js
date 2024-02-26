@@ -9,7 +9,7 @@ const userSchema = mongoose.Schema(
     password: { type: String, required: true },
     rememberToken: { type: String, default: null },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON : {virtuals : true} }
 );
 
 userSchema.methods.setRememberToken = async function (res) {
@@ -26,5 +26,11 @@ userSchema.methods.setRememberToken = async function (res) {
     console.log(error);
   }
 };
+
+userSchema.virtual('courses',{
+  ref: 'Course',
+  localField: '_id',
+  foreignField:'user'
+})
 
 module.exports = mongoose.model("User", userSchema);

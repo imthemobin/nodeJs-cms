@@ -60,13 +60,17 @@ class courseController extends controller {
 
   async destroy(req, res, next) {
     try {
-      let course = await Course.findById(req.params.id);
+      let course = await Course.findById(req.params.id).populate('episodes').exec();
 
       if (!course) {
         return res.json("چنین دوره ای وحود ندارد");
       }
 
       // delete episode
+
+      course.episodes.forEach(async episode=>{
+        await episode.deleteOne({})
+      })
 
       // delete images
 
