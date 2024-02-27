@@ -5,12 +5,22 @@ const router = express.Router();
 const homeController = require("app/http/controllers/homeController");
 const courseController = require("app/http/controllers/courseController");
 
+
+//validaton
+const commentValidation = require("app/http/validator/commentValidator");
+
+//Middlewares
+const redirectIfNotAuthenticated = require("app/http/middlewares/redirectIfNotAuthenticated");
+
 //Home Router
 router.get("/", homeController.index);
 router.get("/about-me", homeController.about);
 router.get("/courses", courseController.index);
 router.get("/courses/:course", courseController.single);
+
 router.get("/download/:episode", courseController.download);
+
+router.post("/comment",redirectIfNotAuthenticated.handler,commentValidation.handler(), homeController.comment)
 
 
 

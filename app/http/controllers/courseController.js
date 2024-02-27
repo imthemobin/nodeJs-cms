@@ -19,7 +19,13 @@ class courseController extends controller {
           sort: { number: 1 },
         },
       },
-    ]);
+    ]).populate([{
+      path: "comments",
+      match: {
+        parent: null,
+        approved: true
+      }
+    }]);
 
     let canUserUse = await this.canUse(req, course);
 
