@@ -1,93 +1,100 @@
 <div class="row">
     <!-- Blog Post Content Column -->
     <div class="col-lg-8">
-            <!-- Title -->
-            <h1 class="mb-3"><%= course.title %></h1>
-    
-            <!-- Author -->
-            <p class="text-muted small">
-                <span> توسط <a href="#"><%= course.user.name %></a></span>
-                -
-                <span>ارسال شده در 21 خرداد 1397</span>
-            </p>
-    
-            <hr>
-            <!-- Post Content -->
-           <div id="content">
-               <%- course.body %>
-           </div>
-            <hr>
-    
-           
-            <% if(auth.check) { %> 
-                <% if(course.type =='vip') {
-                    if(! canUserUse) { %>
-                        <div class="alert alert-danger">برای مشاهده این دوره نیاز است عضویت ویژه را تهیه کنید</div>            
-                    <% }
-                } else if(course.type =='cash') { 
-                    if(! canUserUse) { %>
-                        <div class="alert alert-danger">برای مشاهده این دوره نیاز است بصورت نقدی دوره راه تهیه کنید</div>            
-                    <% } else { %> 
-                        <div class="alert alert-success">شما در این دوره ثبت نام کرده اید</div>                                    
-                    <% }
-                } 
-            } else { %>
-                <div class="alert alert-danger">برای مشاهده این دوره نیاز است ابتدا وارد سایت شوید</div>            
-            <% } %>
-    
-        <h3>قسمت های دوره</h3>
-        <table class="table table-condensed table-bordered">
-        <thead>
-            <tr>
-                <th>شماره قسمت</th>
-                <th>عنوان قسمت</th>
-                <th>زمان قسمت</th>
-                <th>دانلود</th>
-            </tr>
-        </thead>
-        <tbody>
-            
-            <% course.episodes.forEach(episode => { %> 
-                 <tr>
-                    <th><a href="#"><%= episode.number %></a></th>
-                    <td><%= episode.title %></td>
-                    <td><%= episode.time %></td>
-                    <td>
-                        <a href="<%= episode.download(auth.check, canUserUse) %>">دانلود</a>
-                    </td>
-                </tr>
-            <% }) %>
+        <!-- Title -->
+        <h1 class="mb-3">
+            <%= course.title %>
+        </h1>
 
-        </tbody> </table>
-        <!-- Blog Comments -->
+        <!-- Author -->
+        <p class="text-muted small">
+            <span> توسط <a href="#">
+                    <%= course.user.name %>
+                </a></span>
+            -
+            <span>ارسال شده در 21 خرداد 1397</span>
+        </p>
+
         <hr>
-        <!-- Comments Form -->
+        <!-- Post Content -->
+        <div id="content">
+            <%- course.body %>
+        </div>
+        <hr>
 
 
-        <%- include(viewPath('layouts/comment'), {subject: course}) -%>
+        <% if(auth.check) { %>
+            <% if(course.type=='vip' ) { if(! canUserUse) { %>
+                <div class="alert alert-danger">برای مشاهده این دوره نیاز است عضویت ویژه را تهیه کنید</div>
+                <% } } else if(course.type=='cash' ) { if(! canUserUse) { %>
+                    <div class="alert alert-danger">برای مشاهده این دوره نیاز است بصورت نقدی دوره راه تهیه کنید</div>
+                    <% } else { %>
+                        <div class="alert alert-success">شما در این دوره ثبت نام کرده اید</div>
+                        <% } } } else { %>
+                            <div class="alert alert-danger">برای مشاهده این دوره نیاز است ابتدا وارد سایت شوید</div>
+                            <% } %>
 
-        
+                                <h3>قسمت های دوره</h3>
+                                <table class="table table-condensed table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>شماره قسمت</th>
+                                            <th>عنوان قسمت</th>
+                                            <th>زمان قسمت</th>
+                                            <th>دانلود</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <% course.episodes.forEach(episode=> { %>
+                                            <tr>
+                                                <th><a href="#">
+                                                        <%= episode.number %>
+                                                    </a></th>
+                                                <td>
+                                                    <%= episode.title %>
+                                                </td>
+                                                <td>
+                                                    <%= episode.time %>
+                                                </td>
+                                                <td>
+                                                    <a href="<%= episode.download(auth.check, canUserUse) %>">دانلود</a>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+
+                                    </tbody>
+                                </table>
+                                <!-- Blog Comments -->
+                                <hr>
+                                <!-- Comments Form -->
+
+
+                                <%- include(viewPath('layouts/comment'), {subject: course, comments : course.comments})
+                                    -%>
+
+
     </div>
-    
+
     <!-- Blog Sidebar Widgets Column -->
 
     <div class="col-md-4">
 
-        
-            
-                
-                        <div class="card my-4">
-                            <div class="card-body">
-                                <p>برای استفاده از این دوره نیاز است این دوره را با مبلغ 60000 تومان خریداری کنید</p>
-                                <form action="/course/payment" method="post">
-                                    <input type="hidden" name="course_id" value="5b1e4a0ac4cf2d675052a78a">
-                                    <button type="submit" class="btn btn-success">خرید دوره</button>
-                                </form>
-                            </div>
-                        </div>
-                
-            
-        
+
+
+
+        <div class="card my-4">
+            <div class="card-body">
+                <p>برای استفاده از این دوره نیاز است این دوره را با مبلغ 60000 تومان خریداری کنید</p>
+                <form action="/course/payment" method="post">
+                    <input type="hidden" name="course_id" value="5b1e4a0ac4cf2d675052a78a">
+                    <button type="submit" class="btn btn-success">خرید دوره</button>
+                </form>
+            </div>
+        </div>
+
+
+
 
 
 
@@ -95,12 +102,12 @@
         <div class="card my-4">
             <h5 class="card-header">جستجو</h5>
             <div class="card-body">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="دنبال چی میگردی ؟">
-                <span class="input-group-btn">
-                <button class="btn btn-secondary" type="button">جستجو!</button>
-                </span>
-            </div>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="دنبال چی میگردی ؟">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button">جستجو!</button>
+                    </span>
+                </div>
             </div>
         </div>
 
@@ -108,34 +115,34 @@
         <div class="card my-4">
             <h5 class="card-header">دسته بندی ها</h5>
             <div class="card-body">
-            <div class="row">
-                <div class="col-lg-6">
-                <ul class="list-unstyled mb-0">
-                    <li>
-                    <a href="#">طراحی وب</a>
-                    </li>
-                    <li>
-                    <a href="#">HTML</a>
-                    </li>
-                    <li>
-                    <a href="#">برنامه نویسی</a>
-                    </li>
-                </ul>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="#">طراحی وب</a>
+                            </li>
+                            <li>
+                                <a href="#">HTML</a>
+                            </li>
+                            <li>
+                                <a href="#">برنامه نویسی</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6">
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="#">جاوااسکریپت</a>
+                            </li>
+                            <li>
+                                <a href="#">سی اس اس</a>
+                            </li>
+                            <li>
+                                <a href="#">آموزش تخصصی</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="col-lg-6">
-                <ul class="list-unstyled mb-0">
-                    <li>
-                    <a href="#">جاوااسکریپت</a>
-                    </li>
-                    <li>
-                    <a href="#">سی اس اس</a>
-                    </li>
-                    <li>
-                    <a href="#">آموزش تخصصی</a>
-                    </li>
-                </ul>
-                </div>
-            </div>
             </div>
         </div>
     </div>

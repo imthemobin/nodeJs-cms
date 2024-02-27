@@ -11,21 +11,38 @@ class courseController extends controller {
   }
 
   async single(req, res) {
-    let course = await Course.findOne({ slug: req.params.course }).populate([
-      { path: "user", select: "name" },
-      {
-        path: "episodes",
-        options: {
-          sort: { number: 1 },
+    let course = await Course.findOne({ slug: req.params.course })
+      .populate([
+        { path: "user", select: "name" },
+        {
+          path: "episodes",
+          options: {
+            sort: { number: 1 },
+          },
         },
-      },
-    ]).populate([{
-      path: "comments",
-      match: {
-        parent: null,
-        approved: true
-      }
-    }]);
+      ])
+      .populate([
+        {
+          path: "comments",
+          match: {
+            parent: null,
+            approved: true,
+          },
+          populate: [
+            {
+              path: "user",
+              select: "name",
+            },
+            {
+              path: "comments",
+              match: {
+                approved: true,
+              },
+              populate : {path : "user", select: "name"}
+            },
+          ],
+        },
+      ]);
 
     let canUserUse = await this.canUse(req, course);
 
@@ -46,7 +63,9 @@ class courseController extends controller {
       if (!this.hashCheck(req, episode))
         this.error("اعتبار لینک به پایان رسیده است", 403);
 
-      let filePath = path.resolve(`./public/downloads/HKJHGHJ5654S/${episode.videoUrl}`);
+      let filePath = path.resolve(
+        `./public/downloads/HKJHGHJ5654S/${episode.videoUrl}`
+      );
 
       if (!fs.existsSync(filePath))
         this.error("چنین فایلی برای دانلود وجود ندارد", 404);

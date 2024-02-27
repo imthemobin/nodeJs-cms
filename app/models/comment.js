@@ -15,9 +15,15 @@ const commentSchema = Schema(
     },
     comment: { type: String, required: true },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON : { virtual: true } }
 );
 
 commentSchema.plugin(mongoosePaginate);
+
+commentSchema.virtual('comments',{
+  ref:'Comment',
+  localField: '_id',
+  foreignField: 'parent'
+})
 
 module.exports = mongoose.model("Comment", commentSchema);
