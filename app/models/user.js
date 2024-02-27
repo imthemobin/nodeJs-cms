@@ -9,7 +9,7 @@ const userSchema = mongoose.Schema(
     password: { type: String, required: true },
     rememberToken: { type: String, default: null },
   },
-  { timestamps: true, toJSON : {virtuals : true} }
+  { timestamps: true, toJSON: { virtuals: true } }
 );
 
 userSchema.methods.setRememberToken = async function (res) {
@@ -27,10 +27,18 @@ userSchema.methods.setRememberToken = async function (res) {
   }
 };
 
-userSchema.virtual('courses',{
-  ref: 'Course',
-  localField: '_id',
-  foreignField:'user'
-})
+userSchema.virtual("courses", {
+  ref: "Course",
+  localField: "_id",
+  foreignField: "user",
+});
+
+userSchema.methods.isVip = function () {
+  return true;
+};
+
+userSchema.methods.checkLearning = async function (course) {
+  return false;
+};
 
 module.exports = mongoose.model("User", userSchema);

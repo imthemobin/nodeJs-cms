@@ -31,4 +31,8 @@ episodeSchema.methods.typeToPersion = function () {
   }
 };
 
+episodeSchema.methods.download = function(){
+  return "#"
+}
+
 module.exports = mongoose.model("Episode", episodeSchema);
