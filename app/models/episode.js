@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
 const Schema = mongoose.Schema;
+const bcrypt = require("bcrypt");
 
 const episodeSchema = Schema(
   {
@@ -18,7 +19,7 @@ const episodeSchema = Schema(
   { timestamps: true }
 );
 
-episodeSchema.plugin(mongoosePaginate)
+episodeSchema.plugin(mongoosePaginate);
 
 episodeSchema.methods.typeToPersion = function () {
   switch (this.type) {
@@ -31,8 +32,31 @@ episodeSchema.methods.typeToPersion = function () {
   }
 };
 
-episodeSchema.methods.download = function(){
-  return "#"
-}
+episodeSchema.methods.download = function (check, canUserUse) {
+  if (!check) return "#";
+
+  let status = false;
+
+  switch (this.type) {
+    case "free":
+      status = true;
+      break;
+    case "vip":
+      status = canUserUse;
+      break;
+    case "cash":
+      status = canUserUse;
+      break;
+  }
+
+  let timestamps = new Date().getTime() + 3600 * 1000 * 6;
+
+  // unique text for download
+  let text = `QW7F!@#!@3!@!@U8&*^#%TF${this._id}${timestamps}`
+
+  let hash = bcrypt.hashSync(text,15)
+
+  return status ?  `/download/${this._id}?mac=${hash}&t=${timestamps}` : "#";
+};
 
 module.exports = mongoose.model("Episode", episodeSchema);

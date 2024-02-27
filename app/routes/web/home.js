@@ -10,6 +10,7 @@ router.get("/", homeController.index);
 router.get("/about-me", homeController.about);
 router.get("/courses", courseController.index);
 router.get("/courses/:course", courseController.single);
+router.get("/download/:episode", courseController.download);
 
 
 

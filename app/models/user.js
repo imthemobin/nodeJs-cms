@@ -38,7 +38,7 @@ userSchema.methods.isVip = function () {
 };
 
 userSchema.methods.checkLearning = async function (course) {
-  return false;
+  return true;
 };
 
 module.exports = mongoose.model("User", userSchema);

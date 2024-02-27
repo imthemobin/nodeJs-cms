@@ -1,6 +1,9 @@
 const controller = require("app/http/controllers/controller");
-const User = require("app/models/user");
+const Episode = require("app/models/episode");
 const Course = require("app/models/course");
+const path = require("path");
+const fs = require("fs");
+const bcrypt = require("bcrypt");
 
 class courseController extends controller {
   async index(req, res) {
@@ -18,9 +21,34 @@ class courseController extends controller {
       },
     ]);
 
-    let canUserUse = await this.canUse(req,course)
+    let canUserUse = await this.canUse(req, course);
 
-    res.render("home/single-course", {course: course , canUserUse: canUserUse})
+    res.render("home/single-course", {
+      course: course,
+      canUserUse: canUserUse,
+    });
+  }
+
+  async download(req, res, next) {
+    try {
+      this.isMongoId(req.params.episode);
+
+      let episode = await Episode.findById(req.params.episode);
+
+      if (!episode) this.error("چنین قایلی برای این جلسه وجود ندارد", 404);
+
+      if (!this.hashCheck(req, episode))
+        this.error("اعتبار لینک به پایان رسیده است", 403);
+
+      let filePath = path.resolve(`./public/downloads/HKJHGHJ5654S/${episode.videoUrl}`);
+
+      if (!fs.existsSync(filePath))
+        this.error("چنین فایلی برای دانلود وجود ندارد", 404);
+
+      return res.download(filePath);
+    } catch (error) {
+      next(error);
+    }
   }
 
   async canUse(req, course) {
@@ -28,7 +56,6 @@ class courseController extends controller {
 
     if (req.isAuthenticated()) {
       switch (course.type) {
-
         case "vip":
           canUse = req.user.isVip();
           break;
@@ -43,6 +70,16 @@ class courseController extends controller {
       }
     }
     return canUse;
+  }
+
+  hashCheck(req, episode) {
+    let timestamps = new Date().getTime();
+
+    if (req.query.t < timestamps) return false;
+
+    let text = `QW7F!@#!@3!@!@U8&*^#%TF${episode._id}${req.query.t}`;
+
+    return bcrypt.compareSync(text, req.query.mac);
   }
 }
 
