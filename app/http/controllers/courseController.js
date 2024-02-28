@@ -7,12 +7,33 @@ const bcrypt = require("bcrypt");
 
 class courseController extends controller {
   async index(req, res) {
-    res.render("home/courses");
+    let query = {};
+
+    if (req.query.search) {
+      query.title = new RegExp(req.query.search, "gi");
+    }
+
+    if (req.query.type && req.query.type != "all") {
+      query.type = req.query.type;
+    }
+
+    let courses = Course.find({ ...query });
+
+    if (req.query.order) {
+      courses.sort({ createdAt: -1 });
+    }
+
+    courses = await courses.exec();
+
+    res.render("home/courses", { courses });
   }
 
   async single(req, res) {
     // find course and update view count
-    let course = await Course.findOneAndUpdate({ slug: req.params.course }, {$inc : {viewCount: 1}})
+    let course = await Course.findOneAndUpdate(
+      { slug: req.params.course },
+      { $inc: { viewCount: 1 } }
+    )
       .populate([
         { path: "user", select: "name" },
         {
@@ -39,7 +60,7 @@ class courseController extends controller {
               match: {
                 approved: true,
               },
-              populate : {path : "user", select: "name"}
+              populate: { path: "user", select: "name" },
             },
           ],
         },
@@ -71,8 +92,7 @@ class courseController extends controller {
       if (!fs.existsSync(filePath))
         this.error("چنین فایلی برای دانلود وجود ندارد", 404);
 
-
-      await episode.inc("downloadCount")
+      await episode.inc("downloadCount");
 
       return res.download(filePath);
     } catch (error) {
