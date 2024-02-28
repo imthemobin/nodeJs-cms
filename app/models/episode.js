@@ -32,6 +32,10 @@ episodeSchema.methods.typeToPersion = function () {
   }
 };
 
+episodeSchema.methods.path = function(){
+  return `${this.course.slug}/${this.number}`
+}
+
 episodeSchema.methods.download = function (check, canUserUse) {
   if (!check) return "#";
 
