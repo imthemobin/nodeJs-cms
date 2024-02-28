@@ -34,8 +34,8 @@
                                     data-target="#sendCommentModal" data-parent="<%= comment._id %>">پاسخ</button>
                                 <% }%>
                     </h5>
-                    <%- comment.comment -%>
-
+                    <%- comment.comment -%> - 
+                    <small class="text-muted"><%= date(comment.createdAt).fromNow()%></small>
 
                         <%comment.comments.forEach(comment=>{%>
                             <div class="media mt-4">
@@ -44,7 +44,8 @@
                                     <h5 class="mt-0">
                                         <%= comment.user.name %>
                                     </h5>
-                                    <%- comment.comment -%>
+                                    <%- comment.comment -%> - 
+                                    <small class="text-muted"><%= date(comment.createdAt).fromNow()%></small>
                                 </div>
                             </div>
                             <% })%>

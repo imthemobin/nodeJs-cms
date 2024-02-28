@@ -24,6 +24,7 @@
     "express-recaptcha": "^5.1.0",
     "express-session": "^1.18.0",
     "express-validator": "^5.3.1",
+    "jalali-moment": "^3.3.11",
     "method-override": "^3.0.0",
     "mkdirp": "^3.0.1",
     "mongoose": "^8.1.2",

@@ -1,5 +1,6 @@
 const path = require("path");
 const autoBind = require("auto-bind");
+const moment = require("jalali-moment")
 
 module.exports = class helper {
   constructor(req, res) {
@@ -7,6 +8,7 @@ module.exports = class helper {
     this.req = req;
     this.res = res;
     this.formData = req.flash("formData")[0];
+    
   }
 
   getObject() {
@@ -15,6 +17,7 @@ module.exports = class helper {
       viewPath: this.viewPath,
       ...this.globalVaribales(),
       old: this.old,
+      date:this.date
     };
   }
 
@@ -39,5 +42,10 @@ module.exports = class helper {
     return this.formData && this.formData.hasOwnProperty(field)
       ? this.formData[field]
       : defaultValue;
+  }
+
+  date(time){
+    moment.locale("fa")
+    return moment(time);
   }
 };
