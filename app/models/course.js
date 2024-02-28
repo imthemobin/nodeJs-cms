@@ -17,10 +17,10 @@ const CourseSchema = Schema(
     viewCount: { type: Number, default: 0 },
     commentCount: { type: Number, default: 0 },
   },
-  { timestamps: true , toJSON : {virtuals : true} }
+  { timestamps: true, toJSON: { virtuals: true } }
 );
 
-CourseSchema.plugin(mongoosePaginate)
+CourseSchema.plugin(mongoosePaginate);
 
 CourseSchema.methods.typeToPersion = function () {
   switch (this.type) {
@@ -33,20 +33,25 @@ CourseSchema.methods.typeToPersion = function () {
   }
 };
 
-CourseSchema.methods.path = function(){
-  return `/courses/${this.slug}`
-}
+CourseSchema.methods.path = function () {
+  return `/courses/${this.slug}`;
+};
 
-CourseSchema.virtual('episodes',{
-  ref:'Episode',
-  localField: '_id',
-  foreignField: 'course'
-})
+CourseSchema.methods.inc = async function (field, num = 1) {
+  this[field] += num;
+  await this.save();
+};
 
-CourseSchema.virtual('comments',{
-  ref:'Comment',
-  localField: '_id',
-  foreignField: 'course'
-})
+CourseSchema.virtual("episodes", {
+  ref: "Episode",
+  localField: "_id",
+  foreignField: "course",
+});
+
+CourseSchema.virtual("comments", {
+  ref: "Comment",
+  localField: "_id",
+  foreignField: "course",
+});
 
 module.exports = mongoose.model("Course", CourseSchema);

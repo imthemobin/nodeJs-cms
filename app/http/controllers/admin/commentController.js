@@ -79,11 +79,15 @@ class courseController extends controller {
   async update(req, res, next) {
     try {
       this.isMongoId(req.params.id);
-      let comment = await Comment.findById(req.params.id);
+      let comment = await Comment.findById(req.params.id).populate('belongTo').exec()
 
       if (!comment) {
         return res.json("چنین کامنتی وجود ندارد");
       }
+
+
+
+      await comment.belongTo.inc('commentCount');
 
       comment.approved = true;
 

@@ -15,15 +15,29 @@ const commentSchema = Schema(
     },
     comment: { type: String, required: true },
   },
-  { timestamps: true, toJSON : { virtual: true } }
+  { timestamps: true, toJSON: { virtuals: true } }
 );
 
 commentSchema.plugin(mongoosePaginate);
 
-commentSchema.virtual('comments',{
-  ref:'Comment',
+commentSchema.virtual('comments', {
+  ref: 'Comment',
   localField: '_id',
   foreignField: 'parent'
-})
+});
+
+const commentBelong = doc => {
+  if (doc.course) 
+    return 'Course';
+  else if (doc.episode)
+    return 'Episode';
+}
+
+commentSchema.virtual('belongTo', {
+  ref: commentBelong,
+  localField: doc => commentBelong(doc).toLowerCase(),
+  foreignField: '_id',
+  justOne: true  // Assuming each comment belongs to only one Course or Episode
+});
 
 module.exports = mongoose.model("Comment", commentSchema);

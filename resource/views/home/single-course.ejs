@@ -12,7 +12,10 @@
                     <%= course.user.name %>
                 </a></span>
             -
-            <span>ارسال شده در 21 خرداد 1397</span>
+            <span>ارسال شده در 21 خرداد 1397</span> -
+            <span>
+                <span style="background-color: #007bff; color: #fff; padding: 5px 10px; border-radius: 5px; ">نظرات: <%= course.commentCount || 0 %></span>
+            </span>
         </p>
 
         <hr>

@@ -32,9 +32,9 @@ episodeSchema.methods.typeToPersion = function () {
   }
 };
 
-episodeSchema.methods.path = function(){
-  return `${this.course.slug}/${this.number}`
-}
+episodeSchema.methods.path = function () {
+  return `${this.course.slug}/${this.number}`;
+};
 
 episodeSchema.methods.download = function (check, canUserUse) {
   if (!check) return "#";
@@ -56,11 +56,17 @@ episodeSchema.methods.download = function (check, canUserUse) {
   let timestamps = new Date().getTime() + 3600 * 1000 * 6;
 
   // unique text for download
-  let text = `QW7F!@#!@3!@!@U8&*^#%TF${this._id}${timestamps}`
+  let text = `QW7F!@#!@3!@!@U8&*^#%TF${this._id}${timestamps}`;
 
-  let hash = bcrypt.hashSync(text,15)
+  let hash = bcrypt.hashSync(text, 15);
 
-  return status ?  `/download/${this._id}?mac=${hash}&t=${timestamps}` : "#";
+  return status ? `/download/${this._id}?mac=${hash}&t=${timestamps}` : "#";
+};
+
+// to increment number of download count
+episodeSchema.methods.inc = async function (field, num = 1) {
+  this[field] += num;
+  await this.save();
 };
 
 module.exports = mongoose.model("Episode", episodeSchema);

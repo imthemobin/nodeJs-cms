@@ -11,7 +11,8 @@ class courseController extends controller {
   }
 
   async single(req, res) {
-    let course = await Course.findOne({ slug: req.params.course })
+    // find course and update view count
+    let course = await Course.findOneAndUpdate({ slug: req.params.course }, {$inc : {viewCount: 1}})
       .populate([
         { path: "user", select: "name" },
         {
@@ -69,6 +70,9 @@ class courseController extends controller {
 
       if (!fs.existsSync(filePath))
         this.error("چنین فایلی برای دانلود وجود ندارد", 404);
+
+
+      await episode.inc("downloadCount")
 
       return res.download(filePath);
     } catch (error) {
