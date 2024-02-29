@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+    <h2>ایجاد دسته بندی</h2>
+</div>
+<form class="form-horizontal" action="/admin/categories/create" method="post">
+
+    <%- include(viewPath('layouts/error-message')) -%>
+
+        <div class="form-group row">
+            <div class="col">
+                <label for="name" class="control-label font-weight-bold">عنوان دسته بندی</label>
+                <input type="text" class="form-control" name="name" id="name" placeholder="عنوان  دسته بندی را کنید"
+                    value="<%= old('name') %>">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col">
+                <label for="parent" class="control-label font-weight-bold font-weight-bold">دسته بندی مربوطه</label>
+                <select name="parent" id="parent" class="form-control">
+
+                    <option value="none">دسته اصلی</option>
+
+                    <% categories.forEach(category=>{ %>
+
+                        <option value="<%=  category._id %>" <%=String(old('category'))==String(category._id) ? 'selected'
+                            : '' %> ><%= category.name %>
+                        </option>
+                        <% })%>
+
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col">
+                <button type="submit" class="btn btn-danger">ارسال</button>
+            </div>
+        </div>
+</form>
