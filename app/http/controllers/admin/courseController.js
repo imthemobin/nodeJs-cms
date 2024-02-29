@@ -3,6 +3,7 @@ const Course = require("app/models/course");
 const fs = require("fs");
 const path = require("path");
 const sharp = require("sharp");
+const category = require("app/models/category");
 
 class courseController extends controller {
   async index(req, res, next) {
@@ -20,8 +21,9 @@ class courseController extends controller {
     }
   }
 
-  create(req, res) {
-    res.render("admin/courses/create");
+  async create(req, res) {
+    let categories = await category.find({})
+    res.render("admin/courses/create", {categories:categories});
   }
 
   async store(req, res, next) {
@@ -48,6 +50,7 @@ class courseController extends controller {
         images: this.imageResize(req.file),
         tumb: this.imageResize(req.file)[480],
         tags: req.body.tags,
+        categories : req.body.categories
       });
 
       await newCourse.save();
@@ -96,7 +99,9 @@ class courseController extends controller {
         this.error("چنین دوره ای وجود ندارد",404)
       }
 
-      res.render("admin/courses/edit", { course });
+      let categories = await category.find({})
+
+      res.render("admin/courses/edit", { course,categories });
     } catch (error) {
       
       next(error);

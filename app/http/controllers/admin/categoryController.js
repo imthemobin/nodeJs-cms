@@ -40,6 +40,7 @@ class categoryController extends controller {
 
       let newCategory = new Category({
         name: req.body.name,
+        slug: this.slug(req.body.name),
         parent: req.body.parent !== "none" ? req.body.parent : null,
       });
 
@@ -103,6 +104,7 @@ class categoryController extends controller {
       let category = await Category.findByIdAndUpdate(req.params.id, {
         $set: {
           name: req.body.name,
+          slug: this.slug(req.body.name),
           parent: req.body.parent !== "none" ? req.body.parent : null,
         },
       });

@@ -90,4 +90,8 @@ module.exports = class controller {
 
     return sprintf("%02d:%02d:%02d", hours, minutes, seconds);
   }
+
+  slug(title) {
+    return title.replace(/([^۰-۹آ-یa-z0-9]|-)+/g, "-");
+  }
 };

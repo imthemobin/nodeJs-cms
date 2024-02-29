@@ -1,6 +1,7 @@
 const controller = require("app/http/controllers/controller");
 const Episode = require("app/models/episode");
 const Course = require("app/models/course");
+const Category = require("app/models/category");
 const path = require("path");
 const fs = require("fs");
 const bcrypt = require("bcrypt");
@@ -17,6 +18,13 @@ class courseController extends controller {
       query.type = req.query.type;
     }
 
+    if (req.query.category && req.query.category != "all") {
+      let category = await Category.findOne({slug: req.query.category})
+      if(category){
+        query.categories = {$in:[category._id]}
+      }
+    }
+
     let courses = Course.find({ ...query });
 
     if (req.query.order) {
@@ -25,7 +33,9 @@ class courseController extends controller {
 
     courses = await courses.exec();
 
-    res.render("home/courses", { courses });
+    let categories = await Category.find();
+
+    res.render("home/courses", { courses , categories});
   }
 
   async single(req, res) {
@@ -66,11 +76,14 @@ class courseController extends controller {
         },
       ]);
 
+    let  categories = await Category.find({parent: null}).populate("childs").exec()
+
     let canUserUse = await this.canUse(req, course);
 
     res.render("home/single-course", {
       course: course,
       canUserUse: canUserUse,
+      categories:categories
     });
   }
 
