@@ -84,6 +84,11 @@
 
 <link rel="stylesheet" href="/css/component-chosen.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.6/chosen.jquery.min.js"></script>
+<script src="/ckeditor/ckeditor.js"></script>
 <script>
+        CKEDITOR.replace('body', {
+        filebrowserUploadUrl: '/admin/upload-image',
+        language: 'fa'
+    });
     $('.form-control-chosen').chosen({});
 </script>

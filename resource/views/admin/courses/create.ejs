@@ -1,30 +1,32 @@
-    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-        <h2>ایجاد دوره</h2>
-    </div>
-    <form class="form-horizontal" action="/admin/courses/create" method="post" enctype="multipart/form-data">
+<div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+    <h2>ایجاد دوره</h2>
+</div>
+<form class="form-horizontal" action="/admin/courses/create" method="post" enctype="multipart/form-data">
 
-        <%- include(viewPath('layouts/error-message')) -%>
+    <%- include(viewPath('layouts/error-message')) -%>
 
         <div class="form-group row">
             <div class="col">
                 <label for="title" class="control-label font-weight-bold">عنوان دوره</label>
-                <input type="text" class="form-control" name="title" id="title" placeholder="عنوان را وارد کنید" value="<%= old('title') %>">
+                <input type="text" class="form-control" name="title" id="title" placeholder="عنوان را وارد کنید"
+                    value="<%= old('title') %>">
             </div>
         </div>
         <div class="form-group row">
             <div class="col">
                 <label for="type" class="control-label font-weight-bold font-weight-bold">نوع دوره</label>
                 <select name="type" id="type" class="form-control">
-                    <option value="vip" <%= old('type') === 'vip' ? 'selected' : '' %> >اعضای ویژه</option>
-                    <option value="cash" <%= old('type') === 'cash' ? 'selected' : '' %> >نقدی</option>
-                    <option value="free" <%= old('type') === 'free' ? 'selected' : '' %> >رایگان</option>
+                    <option value="vip" <%=old('type')==='vip' ? 'selected' : '' %> >اعضای ویژه</option>
+                    <option value="cash" <%=old('type')==='cash' ? 'selected' : '' %> >نقدی</option>
+                    <option value="free" <%=old('type')==='free' ? 'selected' : '' %> >رایگان</option>
                 </select>
             </div>
         </div>
         <div class="form-group row">
             <div class="col">
                 <label for="categories" class="control-label font-weight-bold font-weight-bold">نوع دسته بندی</label>
-                <select name="categories" id="categories" class="form-control form-control-chosen" data-placeholder="دسته بندی مورد نظر ..." multiple>
+                <select name="categories" id="categories" class="form-control form-control-chosen"
+                    data-placeholder="دسته بندی مورد نظر ..." multiple>
                     <% categories.forEach(category=>{%>
                         <option value="<%=category._id%>">
                             <%=category.name %>
@@ -34,25 +36,29 @@
             </div>
         </div>
         <div class="form-group row">
-          <div class="col">
-              <label for="body" class="control-label font-weight-bold">متن</label>
-              <textarea rows="5" class="form-control" name="body" id="body" placeholder="متن مقاله را وارد کنید"><%= old('body')%></textarea>
-          </div>
+            <div class="col">
+                <label for="body" class="control-label font-weight-bold">متن</label>
+                <textarea rows="10" class="form-control" name="body" id="body"
+                    placeholder="متن مقاله را وارد کنید"><%= old('body')%></textarea>
+            </div>
         </div>
         <div class="form-group row">
             <div class="col">
                 <label for="images" class="control-label font-weight-bold">تصویر دوره</label>
-                <input type="file" class="form-control" name="images" id="images" placeholder="تصویر مقاله را وارد کنید" >
+                <input type="file" class="form-control" name="images" id="images"
+                    placeholder="تصویر مقاله را وارد کنید">
             </div>
         </div>
         <div class="form-group row">
             <div class="col">
                 <label for="price" class="control-label font-weight-bold">قیمت</label>
-                <input type="text" class="form-control" name="price" id="price" placeholder="قیمت ها را وارد کنید" value="<%= old('price') %>">
+                <input type="text" class="form-control" name="price" id="price" placeholder="قیمت ها را وارد کنید"
+                    value="<%= old('price') %>">
             </div>
             <div class="col">
                 <label for="tags" class="control-label font-weight-bold">تگ ها</label>
-                <input type="text" class="form-control" name="tags" id="tags" placeholder="تگ ها را وارد کنید" value="<%= old('tags') %>">
+                <input type="text" class="form-control" name="tags" id="tags" placeholder="تگ ها را وارد کنید"
+                    value="<%= old('tags') %>">
             </div>
         </div>
         <div class="form-group row">
@@ -60,11 +66,17 @@
                 <button type="submit" class="btn btn-danger">ارسال</button>
             </div>
         </div>
-    </form>
+</form>
 
-    
+
 <link rel="stylesheet" href="/css/component-chosen.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.6/chosen.jquery.min.js"></script>
+<script src="/ckeditor/ckeditor.js"></script>
+
 <script>
+    CKEDITOR.replace('body', {
+        filebrowserUploadUrl: '/admin/upload-image',
+        language: 'fa'
+    });
     $('.form-control-chosen').chosen({});
 </script>
