@@ -93,16 +93,29 @@ class courseController extends controller {
       let course = await Course.findById(req.body.course)
 
       if(! course){
-        console.log("not found")
+        return this.alertAndBack(req, res , {
+          title : 'دقت کنید',
+          message : 'چنین دوره ای یافت نشد',
+          type : 'error'
+      });
       }
 
       if(req.user.checkLearning(course)){
-        console.log("شما قبلا این دوره را خرید کرده اید");
-        return;
+        return this.alertAndBack(req, res , {
+          title : 'دقت کنید',
+          message : 'شما قبلا در این دوره ثبت نام کرده اید',
+          type : 'error',
+          button : 'خیلی خوب'
+      });
       }
 
       if(course.price == 0 && (course.type == 'vip'  || course.type == 'free')){
-        console.log("این دوره مخصوص اعضای ویژه است و قابل خرید نیست");
+        return this.alertAndBack(req, res, {
+          title : 'دقت کنید',
+          message : 'این دوره مخصوص اعضای ویژه یا رایگان است و قابل خریداری نیست',
+          type : 'error',
+          button : 'خیلی خوب'
+      });
       }
 
       // buy proccess
