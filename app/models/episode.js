@@ -36,8 +36,8 @@ episodeSchema.methods.path = function () {
   return `${this.course.slug}/${this.number}`;
 };
 
-episodeSchema.methods.download = function (check, canUserUse) {
-  if (!check) return "#";
+episodeSchema.methods.download = function (req) {
+  if (!req.isAuthenticated()) return "#";
 
   let status = false;
 
@@ -46,10 +46,10 @@ episodeSchema.methods.download = function (check, canUserUse) {
       status = true;
       break;
     case "vip":
-      status = canUserUse;
+      status = req.user.isVip();
       break;
     case "cash":
-      status = canUserUse;
+      status = req.user.checkLearning(this.course._id);
       break;
   }
 

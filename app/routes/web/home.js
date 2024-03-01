@@ -22,6 +22,8 @@ router.get("/download/:episode", courseController.download);
 
 router.post("/comment",redirectIfNotAuthenticated.handler,commentValidation.handler(), homeController.comment)
 
+router.post("/courses/payment", courseController.payment)
+
 
 
 

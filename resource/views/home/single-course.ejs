@@ -14,7 +14,8 @@
             -
             <span>ارسال شده در <%= date(course.createdAt).format('D MMMM YYYY') %></span> -
             <span>
-                <span style="background-color: #007bff; color: #fff; padding: 5px 10px; border-radius: 5px; ">نظرات: <%= course.commentCount || 0 %></span>
+                <span style="background-color: #007bff; color: #fff; padding: 5px 10px; border-radius: 5px; ">نظرات: <%=
+                        course.commentCount || 0 %></span>
             </span>
         </p>
 
@@ -27,9 +28,9 @@
 
 
         <% if(auth.check) { %>
-            <% if(course.type=='vip' ) { if(! canUserUse) { %>
+            <% if(course.type=='vip' ) { if(! auth.user.isVip()) { %>
                 <div class="alert alert-danger">برای مشاهده این دوره نیاز است عضویت ویژه را تهیه کنید</div>
-                <% } } else if(course.type=='cash' ) { if(! canUserUse) { %>
+                <% } } else if(course.type=='cash' ) { if(! auth.user.checkLearning()) { %>
                     <div class="alert alert-danger">برای مشاهده این دوره نیاز است بصورت نقدی دوره راه تهیه کنید</div>
                     <% } else { %>
                         <div class="alert alert-success">شما در این دوره ثبت نام کرده اید</div>
@@ -61,7 +62,7 @@
                                                     <%= episode.time %>
                                                 </td>
                                                 <td>
-                                                    <a href="<%= episode.download(auth.check, canUserUse) %>">دانلود</a>
+                                                    <a href="<%= episode.download(req) %>">دانلود</a>
                                                 </td>
                                             </tr>
                                             <% }) %>
@@ -83,22 +84,53 @@
 
     <div class="col-md-4">
 
-
-
-
-        <div class="card my-4">
-            <div class="card-body">
-                <p>برای استفاده از این دوره نیاز است این دوره را با مبلغ 60000 تومان خریداری کنید</p>
-                <form action="/course/payment" method="post">
-                    <input type="hidden" name="course_id" value="5b1e4a0ac4cf2d675052a78a">
-                    <button type="submit" class="btn btn-success">خرید دوره</button>
-                </form>
+        <% if(auth.check) { %> 
+            <% if(course.type =='vip') {
+                if(auth.user.isVip()) { %>
+                    <div class="card my-4">
+                        <div class="card-body">
+                            <p>شما عضو ویژه هستید بنابراین میتوانید از این دوره استفاده کنید</p>
+                        </div>
+                    </div>
+                <% } else { %> 
+                    <div class="card my-4">
+                        <div class="card-body">
+                            <a href="#">برای مشاهده این دوره نیاز است عضویت ویژه را تهیه کنید</a>
+                        </div>
+                    </div>
+                <% }
+            } else if(course.type =='cash') { 
+                if(auth.user.checkLearning()) { %>
+                    <div class="card my-4">
+                        <div class="card-body">
+                            <p>شما در این دوره ثبت نام کرده اید</p>
+                        </div>
+                    </div>
+                <% } else { %> 
+                    <div class="card my-4">
+                        <div class="card-body">
+                            <p>برای استفاده از این دوره نیاز است این دوره را با مبلغ <%= course.price %> تومان خریداری کنید</p>
+                            <form action="/courses/payment" method="post">
+                                <input type="hidden" name="course" value="<%= course._id %>">
+                                <button type="submit" class="btn btn-success">خرید دوره</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }
+            } else { %> 
+                <div class="card my-4">
+                    <div class="card-body">
+                        <p>این دوره رایگان است</p>
+                    </div>
+                </div>
+            <% }
+        } else { %>
+            <div class="card my-4">
+                <div class="card-body">
+                    <a href="/login">برای مشاهده این دوره نیاز است ابتدا وارد سایت شوید</a>
+                </div>
             </div>
-        </div>
-
-
-
-
+        <% } %>
 
 
         <!-- Search Widget -->
@@ -121,20 +153,24 @@
                 <div class="row">
                     <div class="col">
                         <ul class="list-unstyled pr-0">
-                            <%categories.forEach(category =>{%>
+                            <%categories.forEach(category=>{%>
                                 <li>
-                                    <a href="/courses?category=<%= category.slug %>"><%= category.name %> </a>
+                                    <a href="/courses?category=<%= category.slug %>">
+                                        <%= category.name %>
+                                    </a>
                                 </li>
-                                <% if(category.childs) { %> 
+                                <% if(category.childs) { %>
                                     <ul>
-                                        <% category.childs.forEach(cate => { %>
+                                        <% category.childs.forEach(cate=> { %>
                                             <li>
-                                                <a href="/courses?category=<%= cate.slug %>"><%= cate.name %></a>    
-                                            </li>                                    
-                                        <% }) %>
+                                                <a href="/courses?category=<%= cate.slug %>">
+                                                    <%= cate.name %>
+                                                </a>
+                                            </li>
+                                            <% }) %>
                                     </ul>
-                                <% } %> 
-                            <%})%>
+                                    <% } %>
+                                        <%})%>
 
                         </ul>
                     </div>

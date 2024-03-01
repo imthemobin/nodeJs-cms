@@ -1,13 +1,15 @@
 const mongoose = require("mongoose");
 const uniqueString = require("unique-string");
+const Schema = mongoose.Schema;
 
-const userSchema = mongoose.Schema(
+const userSchema = Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     isAdmin: { type: Boolean, default: 0 },
     password: { type: String, required: true },
     rememberToken: { type: String, default: null },
+    learning : [{ type : Schema.Types.ObjectId , ref : 'Course'}],
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );
@@ -37,8 +39,8 @@ userSchema.methods.isVip = function () {
   return true;
 };
 
-userSchema.methods.checkLearning = async function (course) {
-  return true;
+userSchema.methods.checkLearning = function (courseId) {
+  return this.learning.indexOf(courseId) !== -1;
 };
 
 module.exports = mongoose.model("User", userSchema);

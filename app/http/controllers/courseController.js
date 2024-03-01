@@ -76,15 +76,40 @@ class courseController extends controller {
         },
       ]);
 
+
     let  categories = await Category.find({parent: null}).populate("childs").exec()
 
-    let canUserUse = await this.canUse(req, course);
 
     res.render("home/single-course", {
       course: course,
-      canUserUse: canUserUse,
       categories:categories
     });
+  }
+
+  async payment(req,res,next){
+    try {
+      this.isMongoId(req.body.course)
+
+      let course = await Course.findById(req.body.course)
+
+      if(! course){
+        console.log("not found")
+      }
+
+      if(req.user.checkLearning(course)){
+        console.log("شما قبلا این دوره را خرید کرده اید");
+        return;
+      }
+
+      if(course.price == 0 && (course.type == 'vip'  || course.type == 'free')){
+        console.log("این دوره مخصوص اعضای ویژه است و قابل خرید نیست");
+      }
+
+      // buy proccess
+
+    } catch (error) {
+      next(error)
+    }
   }
 
   async download(req, res, next) {
@@ -113,26 +138,6 @@ class courseController extends controller {
     }
   }
 
-  async canUse(req, course) {
-    let canUse = false;
-
-    if (req.isAuthenticated()) {
-      switch (course.type) {
-        case "vip":
-          canUse = req.user.isVip();
-          break;
-
-        case "cash":
-          canUse = req.user.checkLearning(course);
-          break;
-
-        default:
-          canUse = true;
-          break;
-      }
-    }
-    return canUse;
-  }
 
   hashCheck(req, episode) {
     let timestamps = new Date().getTime();
