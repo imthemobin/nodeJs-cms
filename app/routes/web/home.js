@@ -4,6 +4,7 @@ const router = express.Router();
 //controllers
 const homeController = require("app/http/controllers/homeController");
 const courseController = require("app/http/controllers/courseController");
+const userController = require("app/http/controllers/userController");
 
 
 //validaton
@@ -26,6 +27,8 @@ router.post("/courses/payment", redirectIfNotAuthenticated.handler,courseControl
 router.get("/courses/payment/checker", redirectIfNotAuthenticated.handler,courseController.checker)
 
 
+router.get("/user/panel", userController.index)
+router.get("/user/panel/history", userController.history)
 
 
 router.get("/logout", function (req, res, next) {
