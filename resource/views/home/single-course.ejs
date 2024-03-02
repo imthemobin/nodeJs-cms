@@ -30,7 +30,7 @@
         <% if(auth.check) { %>
             <% if(course.type=='vip' ) { if(! auth.user.isVip()) { %>
                 <div class="alert alert-danger">برای مشاهده این دوره نیاز است عضویت ویژه را تهیه کنید</div>
-                <% } } else if(course.type=='cash' ) { if(! auth.user.checkLearning()) { %>
+                <% } } else if(course.type=='cash' ) { if(! auth.user.checkLearning(course._id)) { %>
                     <div class="alert alert-danger">برای مشاهده این دوره نیاز است بصورت نقدی دوره راه تهیه کنید</div>
                     <% } else { %>
                         <div class="alert alert-success">شما در این دوره ثبت نام کرده اید</div>
@@ -100,7 +100,7 @@
                     </div>
                 <% }
             } else if(course.type =='cash') { 
-                if(auth.user.checkLearning()) { %>
+                if(auth.user.checkLearning(course._id)) { %>
                     <div class="card my-4">
                         <div class="card-body">
                             <p>شما در این دوره ثبت نام کرده اید</p>
