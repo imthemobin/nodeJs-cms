@@ -1,5 +1,6 @@
 const controller = require("app/http/controllers/controller");
 const User = require("app/models/user");
+const Role = require("app/models/role");
 const bcrypt = require("bcrypt");
 
 class userController extends controller {
@@ -24,6 +25,44 @@ class userController extends controller {
   async create(req, res, next) {
     try {
       res.render("admin/users/create",);
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async addrole(req,res,next){
+    try {
+      this.isMongoId(req.params.id);
+
+      let user = await User.findById(req.params.id);
+
+      if (!user) {
+        this.error("چنین کاربری وجود ندارد", 404);
+      }
+
+      let roles = await Role.find({})
+
+      res.render("admin/users/addrole", {user:user, roles:roles})
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async storeAddForUser(req,res,next){
+    try {
+      this.isMongoId(req.params.id);
+
+      let user = await User.findById(req.params.id);
+
+      if (!user) {
+        this.error("چنین کاربری وجود ندارد", 404);
+      }
+
+      user.roles = req.body.roles;
+
+      await user.save()
+
+      res.redirect("/admin/users")
     } catch (error) {
       next(error)
     }

@@ -8,12 +8,16 @@ const episodeController = require("app/http/controllers/admin/episodeController"
 const commentController = require("app/http/controllers/admin/commentController");
 const categoryController = require("app/http/controllers/admin/categoryController");
 const userController = require("app/http/controllers/admin/userController");
+const permissionController = require("app/http/controllers/admin/permissionController");
+const roleController = require("app/http/controllers/admin/roleController");
 
 //validaton
 const courseValidation = require("app/http/validator/courseValidator");
 const episodeValidation = require("app/http/validator/episodeValidator");
 const categoryValidation = require("app/http/validator/categoryValidator");
 const registerValidation = require("app/http/validator/registerValidator");
+const permissionValidation = require("app/http/validator/permissionValidator");
+const roleValidation = require("app/http/validator/roleValidator");
 
 // Helper
 const upload = require("app/helper/uploadImage");
@@ -65,6 +69,39 @@ router.put(
   episodeController.update
 );
 
+// permission route
+router.get("/users/permissions", permissionController.index);
+router.get("/users/permissions/create", permissionController.create);
+router.post(
+  "/users/permissions/create",
+  permissionValidation.handler(),
+  permissionController.store
+);
+router.delete("/users/permissions/:id", permissionController.destroy);
+router.get("/users/permissions/:id/edit", permissionController.edit);
+router.put(
+  "/users/permissions/:id",
+  permissionValidation.handler(),
+  permissionController.update
+);
+
+// role route
+router.get("/users/roles", roleController.index);
+router.get("/users/roles/create", roleController.create);
+router.post(
+  "/users/roles/create",
+  roleValidation.handler(),
+  roleController.store
+);
+router.delete("/users/roles/:id", roleController.destroy);
+router.get("/users/roles/:id/edit", roleController.edit);
+router.put(
+  "/users/roles/:id",
+  roleValidation.handler(),
+  roleController.update
+);
+
+
 // category route
 router.get("/categories", categoryController.index);
 router.get("/categories/create", categoryController.create);
@@ -96,4 +133,6 @@ router.get("/users/create", userController.create)
 router.post("/users", registerValidation.handler(),userController.store)
 router.delete("/users/:id", userController.destroy);
 router.get("/users/:id/toggleadmin", userController.toggleadmin )
+router.get("/users/:id/addrole", userController.addrole);
+router.put("/users/:id/addrole", userController.storeAddForUser);
 module.exports = router;
