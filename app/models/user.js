@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const uniqueString = require("unique-string");
 const Schema = mongoose.Schema;
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const userSchema = Schema(
   {
@@ -13,6 +14,8 @@ const userSchema = Schema(
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );
+
+userSchema.plugin(mongoosePaginate);
 
 userSchema.methods.setRememberToken = async function (res) {
   try {

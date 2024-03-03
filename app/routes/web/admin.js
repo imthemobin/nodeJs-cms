@@ -7,11 +7,13 @@ const courseController = require("app/http/controllers/admin/courseController");
 const episodeController = require("app/http/controllers/admin/episodeController");
 const commentController = require("app/http/controllers/admin/commentController");
 const categoryController = require("app/http/controllers/admin/categoryController");
+const userController = require("app/http/controllers/admin/userController");
 
 //validaton
 const courseValidation = require("app/http/validator/courseValidator");
 const episodeValidation = require("app/http/validator/episodeValidator");
 const categoryValidation = require("app/http/validator/categoryValidator");
+const registerValidation = require("app/http/validator/registerValidator");
 
 // Helper
 const upload = require("app/helper/uploadImage");
@@ -88,4 +90,10 @@ router.delete("/comments/:id", commentController.destroy);
 
 router.post("/upload-image", upload.single("upload"),adminController.uploadImage)
 
+
+router.get("/users", userController.index)
+router.get("/users/create", userController.create)
+router.post("/users", registerValidation.handler(),userController.store)
+router.delete("/users/:id", userController.destroy);
+router.get("/users/:id/toggleadmin", userController.toggleadmin )
 module.exports = router;
