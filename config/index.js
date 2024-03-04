@@ -10,5 +10,5 @@ module.exports = {
   layouts: layouts,
   service: service,
   cookie_secretkey: process.env.COOKIE_SECRETKEY,
-  debug: true,
+  debug: false,
 };

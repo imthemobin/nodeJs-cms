@@ -11,6 +11,7 @@ const mongoose = require("mongoose");
 const Helper = require("./helper");
 const rememberLogin = require("app/http/middlewares/rememberLogin");
 const methodOverride = require('method-override')
+const gate = require("app/helper/gate")
 
 module.exports = class Application {
   constructor() {
@@ -69,6 +70,9 @@ module.exports = class Application {
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(rememberLogin.handler);
+
+    app.use(gate.middleware())
+
     app.use((req, res, next) => {
       app.locals = new Helper(req, res).getObject();
       next();
