@@ -44,4 +44,11 @@ router.get("/logout", function (req, res, next) {
   });
 });
 
+// for seo
+router.get('/sitemap.xml' , homeController.sitemap);
+
+// for rss feed
+router.get('/feed/courses' , homeController.feedCourses);
+router.get('/feed/episodes' , homeController.feedEpisodes);
+
 module.exports = router;

@@ -11,4 +11,5 @@ module.exports = {
   service: service,
   cookie_secretkey: process.env.COOKIE_SECRETKEY,
   debug: false,
+  siteurl : process.env.WEBSITE_URL
 };
