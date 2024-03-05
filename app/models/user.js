@@ -10,6 +10,8 @@ const userSchema = Schema(
     isAdmin: { type: Boolean, default: 0 },
     password: { type: String, required: true },
     rememberToken: { type: String, default: null },
+    vipTime : { type : Date , default : new Date().toISOString() },
+    vipType : { type : String , default : 'month' },
     learning : [{ type : Schema.Types.ObjectId , ref : 'Course'}],
     roles : [{ type : Schema.Types.ObjectId , ref : 'Role'}],
   },
@@ -50,7 +52,7 @@ userSchema.virtual("courses", {
 });
 
 userSchema.methods.isVip = function () {
-  return true;
+  return new Date(this.vipTime) > new Date();
 };
 
 userSchema.methods.checkLearning = function (courseId) {

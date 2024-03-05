@@ -29,6 +29,9 @@ router.get("/courses/payment/checker", redirectIfNotAuthenticated.handler,course
 
 router.get("/user/panel", userController.index)
 router.get("/user/panel/history", userController.history)
+router.get("/user/panel/vip", userController.vip)
+router.post("/user/panel/vip/payment", userController.payment)
+router.get("/user/panel/vip/payment/check", userController.paymentCheck)
 
 
 router.get("/logout", function (req, res, next) {
