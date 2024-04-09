@@ -1,30 +1,44 @@
+<link rel="stylesheet" href="/css/coursesView.css">
+<!-- Jumbotron Header -->
+<div class="jumbotron">
+  <h1 class="display-5">آموزش‌های تخصصی در محیطی پویا</h1>
+  <p class="lead">
+    خوش آمدید به پلتفرم ما، جایی که یادگیری به یک تجربه هیجان‌انگیز تبدیل می‌شود. با دسترسی به دوره‌های تخصصی از متخصصان
+    صنعت، ما به شما فرصتی بی‌نظیر برای گسترش دانش و به‌روزرسانی مهارت‌های خود فراهم می‌کنیم.
+  </p>
+  <hr class="my-4">
+  <p>
+    در دوره‌های ما، با آخرین تکنولوژی‌ها و رویکردهای آموزشی پیشرفته آشنا شده و توانایی‌های خود را به سطح بالاتری
+    برسانید. همچنین، امکانات دسترسی به منابع آموزشی فوق‌العاده و امکان ارتباط با اجتماعی از دیگر دانشجویان را تجربه
+    کنید.
+  </p>
+  <a class="btn btn-primary btn-lg" href="/courses" role="button">مشاهده دوره‌ها</a>
+</div>
 
-    <!-- Jumbotron Header -->
-    <header class="jumbotron hero-spacer">
-        <h1>وبسایت آموزشی مبین لرن</h1>
-        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد.</p>
-    </header>
-      
-      <div class="row mb-3">
-        <div class="col-lg-12">
-            <h3>آخرین دوره ها</h3>
+
+<div class="row mb-3">
+  <div class="col-lg-12">
+    <h3>آخرین دوره ها</h3>
+  </div>
+</div>
+<div class="row">
+  <% courses.forEach(course=> { %>
+    <div class="col-6 col-md-3">
+      <div class="card">
+        <img class="card-img-top" src="<%= course.tumb %>" alt="<%= course.title %>">
+        <div class="card-body">
+          <h5><a href="<%= course.path() %>">
+              <%= course.title %>
+            </a></h5>
+          <p class="card-text">
+            <%= striptags(course.body.substr(0, 90))  %>
+          </p>
+          <a href="<%= course.path() %>" class="btn btn-primary btn-sm">اطلاعات بیشتر</a>
+        </div>
+        <div class="card-footer text-muted">
+          <%= course.viewCount %> بازدید
         </div>
       </div>
-      <div class="row">
-          <% courses.forEach(course => { %>
-            <div class="col-6 col-md-3">
-                <div class="card">
-                    <img class="card-img-top" src="<%= course.tumb %>" alt="<%= course.title %>">
-                    <div class="card-body">
-                      <h3><a href="<%= course.path() %>"><%= course.title %></a></h3>
-                      <p class="card-text"><%= course.body.substr(0,100) %></p>
-                      <a href="<%= course.path() %>" class="btn btn-primary btn-sm">اطلاعات بیشتر</a>
-                    </div>
-                    <div class="card-footer text-muted">
-                      <%= course.viewCount %> بازدید
-                    </div>
-                </div>
-            </div>
-          <% }) %>
-      </div>
-      
+    </div>
+    <% }) %>
+</div>

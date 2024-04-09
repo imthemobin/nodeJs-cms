@@ -1,176 +1,109 @@
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">داشبورد</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group ml-2">
-            <button class="btn btn-sm btn-outline-secondary">اشتراک گذاری</button>
-            <button class="btn btn-sm btn-outline-secondary">خروجی گرفتن</button>
-            </div>
-            <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            این هفته
-            </button>
-        </div>
+<link rel="stylesheet" href="/css/dashboardCard.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<div class="ag-format-container">
+    <div class="ag-courses_box">
+        <div class="ag-courses_item">
+            <a href="/admin/courses" class="ag-courses-item_link">
+                <div class="ag-courses-item_bg"></div>
+
+                <div class="ag-courses-item_title">
+                    <i class="fas fa-book"></i> بخش دوره های سایت
+                </div>
+
+                <div class="ag-courses-item_date-box">
+                    موارد:
+                    <span class="ag-courses-item_date">
+                        ویرایش حذف افزودن
+                    </span>
+                </div>
+            </a>
         </div>
 
-        <canvas class="my-4" id="myChart" width="900" height="380"></canvas>
+        <div class="ag-courses_item">
+            <a href="/admin/comments/" class="ag-courses-item_link">
+                <div class="ag-courses-item_bg"></div>
 
-        <h2 class="mb-4">بخش محصولات</h2>
-        <div class="table-responsive">
-        <table class="table table-striped ">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>عنوان</th>
-                    <th>عنوان</th>
-                    <th>عنوان</th>
-                    <th>عنوان</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1,001</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-                <tr>
-                    <td>1,002</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-                <tr>
-                    <td>1,003</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-                <tr>
-                    <td>1,004</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-                <tr>
-                    <td>1,005</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-                <tr>
-                    <td>1,006</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-                <tr>
-                    <td>1,007</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-                <tr>
-                    <td>1,008</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-                <tr>
-                    <td>1,009</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-                <tr>
-                    <td>1,010</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-                <tr>
-                    <td>1,011</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-                <tr>
-                    <td>1,012</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-                <tr>
-                    <td>1,013</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-                <tr>
-                    <td>1,014</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-                <tr>
-                    <td>1,015</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                    <td>محصول</td>
-                </tr>
-            </tbody>
-        </table>
+                <div class="ag-courses-item_title">
+                    <i class="fas fa-comments"></i> بخش نظرات سایت
+                </div>
+
+                <div class="ag-courses-item_date-box">
+                    موارد:
+                    <span class="ag-courses-item_date">
+                        حذف کامنت های تایید نشده
+                    </span>
+                </div>
+            </a>
         </div>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-<script>
-    var ctx = document.getElementById("myChart");
-    var myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ["یکشبنه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"],
-        datasets: [{
-        data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
-        lineTension: 0,
-        backgroundColor: 'transparent',
-        borderColor: '#007bff',
-        borderWidth: 4,
-        pointBackgroundColor: '#007bff'
-        }]
-    },
-    options: {
-        scales: {
-        yAxes: [{
-            ticks: {
-            beginAtZero: false
-            }
-        }]
-        },
-        legend: {
-        display: false,
-        }
-    }
-    });
-</script>
+        <div class="ag-courses_item">
+            <a href="/admin/users" class="ag-courses-item_link">
+                <div class="ag-courses-item_bg"></div>
+
+                <div class="ag-courses-item_title">
+                    <i class="fas fa-users"></i> بخش کاربران سایت
+                </div>
+
+                <div class="ag-courses-item_date-box">
+                    موارد:
+                    <span class="ag-courses-item_date">
+                        ویرایش حذف مدیریت دسترسی
+                    </span>
+                </div>
+            </a>
+        </div>
+
+        <div class="ag-courses_item">
+            <a href="/admin/episodes/" class="ag-courses-item_link">
+                <div class="ag-courses-item_bg"></div>
+
+                <div class="ag-courses-item_title">
+                    <i class="fas fa-video"></i> بخش ویدوی های سایت
+                </div>
+
+                <div class="ag-courses-item_date-box">
+                    موارد:
+                    <span class="ag-courses-item_date">
+                        ویرایش حذف مدیریت دسترسی
+                    </span>
+                </div>
+            </a>
+        </div>
+
+        <div class="ag-courses_item">
+            <a href="/admin/users/permissions" class="ag-courses-item_link">
+                <div class="ag-courses-item_bg"></div>
+
+                <div class="ag-courses-item_title">
+                    <i class="fas fa-lock"></i> بخش اجازه دسترسی های سایت
+                </div>
+
+                <div class="ag-courses-item_date-box">
+                    موارد:
+                    <span class="ag-courses-item_date">
+                        قابلیت های دسترسی سایت
+                    </span>
+                </div>
+            </a>
+        </div>
+
+        <div class="ag-courses_item">
+            <a href="/admin/users/roles" class="ag-courses-item_link">
+                <div class="ag-courses-item_bg"></div>
+
+                <div class="ag-courses-item_title">
+                    <i class="fa-solid fa-gear"></i> بخش سطح کاربران سایت
+                </div>
+
+                <div class="ag-courses-item_date-box">
+                    موارد:
+                    <span class="ag-courses-item_date">
+                        مدیر پشتیبان مدرس
+                    </span>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</div>

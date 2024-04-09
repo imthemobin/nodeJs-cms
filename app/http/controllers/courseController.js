@@ -7,6 +7,7 @@ const fs = require("fs");
 const bcrypt = require("bcrypt");
 const request = require("request-promise");
 const Payment = require("app/models/payment");
+const striptags = require('striptags');
 
 class courseController extends controller {
   async index(req, res) {
@@ -37,7 +38,7 @@ class courseController extends controller {
 
     let categories = await Category.find();
 
-    res.render("home/courses", { courses, categories });
+    res.render("home/courses", { courses, categories, striptags });
   }
 
   async single(req, res) {

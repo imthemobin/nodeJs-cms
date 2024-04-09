@@ -12,7 +12,7 @@ class episodeController extends controller {
 
       let episodes = await Episode.paginate(
         {},
-        { page: page, sort: { createdAt: 1 }, limit: 1 }
+        { page: page, sort: { createdAt: 1 }, limit: 10, populate:"course" }
       );
 
       res.render("admin/episodes/index", {
@@ -103,7 +103,7 @@ class episodeController extends controller {
         $set: { ...req.body },
       });
 
-      // update time course
+
 
       // prev course time update
       this.updateCourseTime(episode.course);

@@ -53,10 +53,10 @@
                                     <tbody>
 
                                         <% course.episodes.forEach(episode=> { %>
-                                            <tr>
-                                                <th><a href="#">
+                                            <tr  <% if (episode.type === "free") { %>style="background-color: #d4edda;"<% } %>>
+                                                <th>
                                                         <%= episode.number %>
-                                                    </a></th>
+                                                    </th>
                                                 <td>
                                                     <%= episode.title %>
                                                 </td>

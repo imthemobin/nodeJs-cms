@@ -9,4 +9,46 @@
         <li> <b>زمان عضویت ویژه شما به پایان رسیده است یا عضویت ویژه ندارید</b></li>
     <%}%>
     
-</ul>
+</ul> 
+
+<!-- Button to toggle the edit form -->
+<button id="editButton" class="btn btn-warning">ویرایش اطلاعات</button>
+
+<%- include(viewPath('layouts/error-message')) -%>
+<!-- Edit form (initially hidden) -->
+<div id="editForm" style="display: none; margin: 20px;">
+    <form action="/user/panel/<%= auth.user._id %>?_method=put" method="post">
+        <div class="mb-3">
+            <label for="newName" class="form-label">نام جدید:</label>
+            <input type="text" class="form-control" id="newName" name="newName" value="<%= old('newName', auth.user.name)%>">
+        </div>
+
+        <div class="mb-3">
+            <label for="newEmail" class="form-label">ایمیل جدید:</label>
+            <input type="email" class="form-control" id="newEmail" name="newEmail" value="<%= old('newEmail', auth.user.email) %>">
+        </div>
+
+        <div class="mb-3">
+            <label for="newPassword" class="form-label">پسورد جدید:</label>
+            <input type="password" class="form-control" id="newPassword" name="newPassword" value="">
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+        <button type="button" class="btn btn-secondary" onclick="closeForm()">بستن</button>
+    </form>
+</div>
+
+<!-- JavaScript to handle the button click and toggle the form visibility -->
+<script>
+    document.getElementById('editButton').addEventListener('click', function () {
+        var form = document.getElementById('editForm');
+        form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+    });
+
+    function closeForm() {
+        var form = document.getElementById('editForm');
+        form.style.display = 'none';
+        // Add any additional logic you may need when closing the form without changes
+    }
+</script>

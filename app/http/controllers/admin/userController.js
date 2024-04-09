@@ -123,6 +123,49 @@ class userController extends controller {
     }
   }
 
+  async edit(req, res, next) {
+    try {
+      this.isMongoId(req.params.id);
+      let user = await User.findById(req.params.id);
+
+      if (!user) {
+        this.error("چنین کاربری وجود ندارد", 404);
+      }
+
+      res.render("admin/users/edit", {
+        user:user
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async update(req, res, next) {
+    try {
+      let result = await this.validationData(req);
+
+      if (!result) {
+        return this.back(req, res);
+      }
+
+      //update user
+      let user = await User.findByIdAndUpdate(req.params.id, {
+        $set: {
+          name: req.body.newName,
+          email: req.body.newEmail,
+          password: bcrypt.hashSync(req.body.newPassword, 10),
+        },
+      });
+
+      //redirect back
+      return res.redirect("/admin/users");
+    } catch (error) {
+      console.log(error)
+      next(error);
+    }
+  }
+
+
   async toggleadmin(req, res, next) {
     try {
       this.isMongoId(req.params.id);

@@ -2,7 +2,6 @@ const controller = require("app/http/controllers/controller");
 const Category = require("app/models/category");
 const fs = require("fs");
 const path = require("path");
-const sharp = require("sharp");
 
 class categoryController extends controller {
   async index(req, res, next) {
@@ -114,13 +113,6 @@ class categoryController extends controller {
     } catch (error) {
       next(error);
     }
-  }
-
-  async updateCourseTime(coursId) {
-    let course = await Course.findById(coursId).populate("episodes").exec();
-    course.time = this.getTime(course.episodes);
-
-    await course.save();
   }
 }
 

@@ -10,6 +10,7 @@
         <thead>
             <tr>
                 <th>عنوان ویدیو</th>
+                <th>دوره مربوطه</th>
                 <th>تعداد نظرات</th>
                 <th>تعداد دانلود</th>
                 <th>مقدار بازدید</th>
@@ -20,9 +21,12 @@
         <tbody>
             <%episodes.docs.forEach(episode=>{%>
                 <tr>
-                    <td><a href="/courses/آپدیت-جدید">
+                    <td><a href="#">
                             <%= episode.title %>
                         </a></td>
+                        <td>
+                            <%= episode.course.title %>
+                        </td>
                     <td>
                         <%= episode.commentCount %>
                     </td>

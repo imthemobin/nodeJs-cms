@@ -1,11 +1,56 @@
-<header class="jumbotron hero-spacer">
+<link rel="stylesheet" href="/css/coursesView.css">
+<style>
+  /* Add these styles to your existing stylesheet or create a new one */
+
+.form-row {
+  margin-top: 20px;
+}
+
+.alert-info {
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+  color: #0c5460;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-control {
+  width: 100%;
+}
+
+.form-check-input {
+  margin-top: 0.25rem;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-outline-dark {
+  border-color: #343a40;
+  color: #343a40;
+}
+
+.btn-outline-dark:hover {
+  background-color: #343a40;
+  color: #fff;
+}
+
+/* Add more styles as needed */
+
+
+</style>
+<div class="jumbotron hero-spacer">
   <h1>دوره‌های آموزشی</h1>
   <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه
     روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود
     ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد
     تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد
     کرد.</p>
-</header>
+  </div>
 
 <% let { search , type , order, category }=req.query; %>
 
@@ -66,7 +111,7 @@
                   <%= course.title %>
                 </a></h3>
               <p class="card-text">
-                <%= course.body.substr(0,100) %>
+                <%= striptags(course.body.substr(0, 90)) %>
               </p>
               <a href="<%= course.path() %>" class="btn btn-primary btn-sm">اطلاعات بیشتر</a>
             </div>

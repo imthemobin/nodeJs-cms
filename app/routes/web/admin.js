@@ -19,6 +19,7 @@ const categoryValidation = require("app/http/validator/categoryValidator");
 const registerValidation = require("app/http/validator/registerValidator");
 const permissionValidation = require("app/http/validator/permissionValidator");
 const roleValidation = require("app/http/validator/roleValidator");
+const editInfoValidation = require("app/http/validator/editInfoValidator");
 
 // Helper
 const upload = require("app/helper/uploadImage");
@@ -140,7 +141,7 @@ router.post(
 );
 
 
-// gate.can("edit-user")
+
 
 router.get("/users", userController.index);
 router.get("/users/create",gate.can("store-user"), userController.create);
@@ -149,5 +150,12 @@ router.delete("/users/:id", gate.can("delete-users"),userController.destroy);
 router.get("/users/:id/toggleadmin",gate.can("change-to-admin-user"), userController.toggleadmin);
 router.get("/users/:id/addrole",gate.can("add-role-user"), userController.addrole);
 router.put("/users/:id/addrole",gate.can("add-role-user"), userController.storeAddForUser);
+router.get("/users/:id/edit",gate.can("edit-user"), userController.edit);
+router.put(
+  "/users/:id",
+  gate.can("edit-user"),
+  editInfoValidation.handler(),
+  userController.update
+);
 
 module.exports = router;

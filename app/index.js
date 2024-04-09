@@ -33,6 +33,7 @@ module.exports = class Application {
       .connect(config.database.url)
       .then(() => console.log("connect successfully to mongo"))
       .catch(() => console.log("fail to connect mongo"));
+      
   }
 
   setupConfig() {

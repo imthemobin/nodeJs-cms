@@ -12,7 +12,7 @@ class courseController extends controller {
 
       let courses = await Course.paginate(
         {},
-        { page: page, sort: { createdAt: 1 }, limit: 1 }
+        { page: page, sort: { createdAt: 1 }, limit: 3 }
       );
 
       res.render("admin/courses/index", { title: "دوره ها", courses: courses });

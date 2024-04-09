@@ -14,7 +14,7 @@ class homeController extends controller {
 
     let courses = await Course.find({}).sort({ createdAt: 1 }).limit(8).exec();
 
-    res.render("home/index", { courses: courses });
+    res.render("home/index", { courses: courses ,striptags:striptags});
   }
 
   async about(req, res) {

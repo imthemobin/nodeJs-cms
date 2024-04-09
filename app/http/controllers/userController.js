@@ -1,7 +1,8 @@
 const controller = require("app/http/controllers/controller");
 const Payment = require("app/models/payment");
-const Course = require("app/models/course");
+const User = require("app/models/user");
 const request = require("request-promise");
+const bcrypt = require("bcrypt");
 
 class userController extends controller {
   async index(req, res, next) {
@@ -247,6 +248,31 @@ class userController extends controller {
       body: params,
       json: true,
     };
+  }
+
+  async update(req, res, next) {
+    try {
+      let result = await this.validationData(req);
+
+      if (!result) {
+        return this.back(req, res);
+      }
+
+      //update user
+      let user = await User.findByIdAndUpdate(req.params.id, {
+        $set: {
+          name: req.body.newName,
+          email: req.body.newEmail,
+          password: bcrypt.hashSync(req.body.newPassword, 10),
+        },
+      });
+
+      //redirect back
+      return res.redirect("/user/panel");
+    } catch (error) {
+      console.log(error)
+      next(error);
+    }
   }
 }
 

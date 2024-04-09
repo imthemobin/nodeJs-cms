@@ -14,11 +14,11 @@
 </head>
 <body>
   <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">وبسایت آموزشی مبین لرن</a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/admin">مدیریت وبسایت آموزشی مبین لرن</a>
     <input class="form-control form-control-dark w-100" type="text" placeholder="جستجو" aria-label="Search">
     <ul class="navbar-nav px-3">
       <li class="nav-item text-nowrap">
-        <a class="nav-link" href="#">خروج</a>
+        <a class="nav-link" href="/">خروج</a>
       </li>
     </ul>
   </nav>
@@ -30,78 +30,32 @@
             <%- body %>
         </main>
 
- 
-
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link active" href="#">
+                <a class="nav-link <%= req.url == '/admin' ? 'active' : ''  %> " href="/admin">
                   <span data-feather="home"></span>
                   داشبورد
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file"></span>
-                  سفارشات
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/admin/courses">
+                <a class="nav-link <%= req.url == '/admin/courses' ? 'active' : ''  %>" href="/admin/courses">
                   <span data-feather="shopping-cart"></span>
                   دورها
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link  <%= req.url == '/admin/users' ? 'active' : ''  %>" href="/admin/users">
                   <span data-feather="users"></span>
                   کاربران
                 </a>
               </li>
+
               <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="bar-chart-2"></span>
-                  گزارشات
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link <%= req.url == '/admin/comments' ? 'active' : ''  %>" href="/admin/comments">
                   <span data-feather="layers"></span>
                   نظرات
-                </a>
-              </li>
-            </ul>
-
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-              <span>گزارشات ذخیره شده</span>
-              <a class="d-flex align-items-center text-muted" href="#">
-                <span data-feather="plus-circle"></span>
-              </a>
-            </h6>
-            <ul class="nav flex-column mb-2">
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file-text"></span>
-                  این ماه
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file-text"></span>
-                  ماه گذشته
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file-text"></span>
-                  شبکه های اجتماعی
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file-text"></span>
-                  فروش سالانه
                 </a>
               </li>
             </ul>

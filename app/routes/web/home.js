@@ -9,6 +9,7 @@ const userController = require("app/http/controllers/userController");
 
 //validaton
 const commentValidation = require("app/http/validator/commentValidator");
+const editInfoValidation = require("app/http/validator/editInfoValidator");
 
 //Middlewares
 const redirectIfNotAuthenticated = require("app/http/middlewares/redirectIfNotAuthenticated");
@@ -32,6 +33,11 @@ router.get("/user/panel/history", userController.history)
 router.get("/user/panel/vip", userController.vip)
 router.post("/user/panel/vip/payment", userController.payment)
 router.get("/user/panel/vip/payment/check", userController.paymentCheck)
+router.put(
+  "/user/panel/:id",
+  editInfoValidation.handler(),
+  userController.update
+);
 
 
 router.get("/logout", function (req, res, next) {

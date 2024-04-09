@@ -6,13 +6,15 @@ const uniqueString = require("unique-string");
 const bcrypt = require("bcrypt");
 
 class resetPasswordController extends controller {
-  showResetPasswordForm(req, res) {
+  async showResetPasswordForm(req, res) {
+    let email = await PasswordReset.findOne({token: req.params.token})
+    console.log(email);
     const title = "تغیر رمز عبور";
-    console.log(req.flash('email'))
     res.render("home/auth/forgot_password/reset", {
       recaptcha: this.recaptcha.render(),
       title: title,
       token: req.params.token,
+      email: email,
     });
   }
 
